@@ -1,301 +1,322 @@
-import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useGame } from '../context/GameContext';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
-  ChevronLeft,
-  Plus,
+  ArrowLeft,
+  Phone,
+  Video,
+  Smile,
+  ImagePlus,
   Mic,
-  ArrowUp,
-  Lock,
-  Info,
+  Send,
+  Check,
+  CheckCheck,
+  Clock,
+  Trash2,
+  Brain,
 } from 'lucide-react';
-import type { Message } from '../types';
+import { useStore } from '../store/Store';
+import Avatar from '../components/Avatar';
+
+const EMOJI_PANEL = ['😀','😂','🥰','😎','🤔','😢','😡','🥺','😴','🤤','😱','🤯','👍','❤️','🔥','🎉','🙏','👏','✨','💯','🌹','☕','🍜','🎂','🐶','🐱','🦋','🌈','⭐','💔'];
 
 export default function ChatPage() {
-  const navigate = useNavigate();
-  const { state, sendMessage } = useGame();
-  const [inputValue, setInputValue] = useState('');
-  const [countdown, setCountdown] = useState(60);
-  const [showRules, setShowRules] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { sessionId, avatarId } = useParams();
+  const nav = useNavigate();
+  const store = useStore();
+  const { state, dispatch } = store;
 
-  const { currentSession } = state;
-
-  // 倒计时逻辑
+  // Ensure session exists when starting from avatarId
   useEffect(() => {
-    if (!currentSession) return;
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          navigate('/result?timeout=true');
-          return 0;
+    if (avatarId && !sessionId) {
+      const avatar = state.avatars.find((a) => a.id === avatarId);
+      if (avatar) {
+        const existing = state.sessions.find((s) => s.avatarId === avatarId);
+        if (existing) {
+          nav(`/chat/${existing.id}`, { replace: true });
+        } else {
+          const sess = store.startNewSession(avatar, state.user || undefined);
+          nav(`/chat/${sess.id}`, { replace: true });
         }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [currentSession, navigate]);
-
-  // 收到消息重置
-  useEffect(() => {
-    if (currentSession && currentSession.messages.length > 0) {
-      const lastMessage = currentSession.messages[currentSession.messages.length - 1];
-      if (lastMessage.sender === 'opponent') {
-        setCountdown(60);
       }
     }
-  }, [currentSession?.messages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [avatarId]);
 
-  // 自动滚动
+  const session = sessionId ? state.sessions.find((s) => s.id === sessionId) : state.activeSessionId ? state.sessions.find((s) => s.id === state.activeSessionId) : undefined;
+  const avatar = session ? state.avatars.find((a) => a.id === session.avatarId) : undefined;
+
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentSession?.messages]);
+    if (session && session.unread > 0) {
+      dispatch({ type: 'MARK_READ', sessionId: session.id });
+    }
+  }, [session?.id]);
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim() || !currentSession) return;
-    sendMessage(inputValue.trim());
-    setInputValue('');
-    setCountdown(60);
-    setTimeout(() => inputRef.current?.focus(), 100);
-  };
+  const [input, setInput] = useState('');
+  const [showEmoji, setShowEmoji] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  const handleEndChat = () => {
-    navigate('/judge');
-  };
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
+  }, [session?.messages.length]);
 
-  if (!currentSession) {
-    return <div className="h-screen bg-ios-bg flex items-center justify-center">加载中...</div>;
+  if (!session || !avatar) {
+    return (
+      <div className="p-8 text-center">
+        <p className="text-ios-label3">对话不存在</p>
+        <button className="pill mt-4" onClick={() => nav('/')}>返回首页</button>
+      </div>
+    );
   }
 
-  const now = new Date();
-  const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-  const lastPlayerId = getLastPlayerMessageId(currentSession.messages);
+  const send = () => {
+    if (!input.trim()) return;
+    const text = input.trim();
+    store.sendUserMessage(session.id, text);
+    store.sendAiReply(session.id, avatar, text);
+    setInput('');
+    setShowEmoji(false);
+  };
+
+  const sendImage = (url: string) => {
+    store.sendUserMessage(session.id, '', { image: url });
+    setTimeout(() => {
+      store.sendAiReply(session.id, avatar, '（发送了一张图片）');
+    }, 800);
+  };
+
+  const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        sendImage(reader.result as string);
+      };
+      reader.readAsDataURL(f);
+    }
+  };
+
+  const startVoice = () => {
+    const duration = Math.floor(3 + Math.random() * 5);
+    store.sendUserMessage(session.id, '', { voice: { duration } });
+    setTimeout(() => {
+      store.sendAiReply(session.id, avatar, `（语音消息，约 ${duration} 秒）`);
+    }, 800);
+  };
+
+  const formatTime = (t: number) => {
+    const d = new Date(t);
+    const hh = d.getHours().toString().padStart(2, '0');
+    const mm = d.getMinutes().toString().padStart(2, '0');
+    return `${hh}:${mm}`;
+  };
+
+  const formatDay = (t: number) => {
+    const d = new Date(t);
+    const now = new Date();
+    const diff = (now.setHours(0, 0, 0, 0) - new Date(d).setHours(0, 0, 0, 0)) / 86400000;
+    if (diff === 0) return '今天';
+    if (diff === 1) return '昨天';
+    if (diff < 7) return `${Math.floor(diff)} 天前`;
+    return `${d.getMonth() + 1}/${d.getDate()}`;
+  };
+
+  // Create groups separated by day
+  const groups: Array<{ day: string; items: typeof session.messages }> = [];
+  session.messages.forEach((m) => {
+    const day = formatDay(m.time);
+    const last = groups[groups.length - 1];
+    if (last && last.day === day) last.items.push(m);
+    else groups.push({ day, items: [m] });
+  });
+
+  const deleteSession = () => {
+    dispatch({ type: 'DELETE_SESSION', sessionId: session.id });
+    nav('/chats');
+  };
 
   return (
-    <div className="h-screen flex flex-col bg-ios-bg text-ios-label overflow-hidden">
-      {/* ===== 顶部导航栏（iOS 毛玻璃） ===== */}
-      <div className="ios-nav-bar shrink-0 z-10">
-        {/* 状态栏占位（让出 iPhone 顶部空间） */}
-        <div className="h-11" />
-
-        {/* 第一行：返回 + 标题 + 信息按钮 */}
-        <div className="flex items-center justify-between px-2 pb-1">
-          <motion.button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-0.5 px-1.5 py-1 rounded-full active:bg-black/5"
-            whileTap={{ scale: 0.9 }}
-          >
-            <ChevronLeft className="w-7 h-7 text-ios-blue" strokeWidth={2.5} />
-          </motion.button>
-
-          <div className="flex-1 text-center">
-            <h1 className="text-[17px] font-semibold text-ios-label">TA</h1>
-          </div>
-
-          <motion.button
-            onClick={() => setShowRules(!showRules)}
-            className="p-1.5 rounded-full active:bg-black/5"
-            whileTap={{ scale: 0.9 }}
-          >
-            <Info className="w-6 h-6 text-ios-blue" />
-          </motion.button>
-        </div>
-      </div>
-
-      {/* ===== 在线状态 + 倒计时胶囊 ===== */}
-      <div className="px-3 pt-2 pb-1 flex justify-center shrink-0">
-        <div className="flex items-center gap-2 bg-white/70 backdrop-blur-md rounded-full px-3 py-1.5 shadow-sm border border-black/[0.04]">
-          <span className="relative flex w-2 h-2">
-            <span className="absolute inline-flex h-full w-full rounded-full bg-ios-green opacity-75 animate-ping" />
-            <span className="relative inline-flex w-2 h-2 rounded-full bg-ios-green" />
-          </span>
-          <span className="text-[12px] text-ios-secondary font-medium">在线</span>
-          <span className="text-[12px] text-ios-gray">·</span>
-          <motion.span
-            className={`text-[12px] font-mono font-semibold ${
-              countdown <= 10 ? 'text-ios-red' : 'text-ios-blue'
-            }`}
-            animate={countdown <= 10 ? { scale: [1, 1.08, 1] } : {}}
-            transition={{ duration: 0.5, repeat: countdown <= 10 ? Infinity : 0 }}
-          >
-            {String(countdown).padStart(2, '0')}秒
-          </motion.span>
-        </div>
-      </div>
-
-      {/* ===== 规则提示（点击右上角 info 显示） ===== */}
-      <AnimatePresence>
-        {showRules && (
-          <motion.div
-            className="px-3 pb-2 shrink-0"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-          >
-            <div className="bg-ios-blue/8 rounded-2xl p-3 border border-ios-blue/15">
-              <p className="text-[13px] text-ios-secondary leading-relaxed">
-                <span className="font-semibold text-ios-blue">挑战规则：</span>
-                通过聊天判断对方是「真人」还是「AI」。
-                对方超过 60 秒未回复即挑战失败。
-                聊天结束后选择答案，揭晓身份。
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ===== 聊天区域 ===== */}
-      <div className="flex-1 overflow-y-auto px-3 pt-2 pb-2">
-        {/* iMessage 加密提示 */}
-        <div className="flex flex-col items-center gap-0.5 mb-3">
-          <span className="text-[11px] text-ios-gray font-medium">iMessage 信息</span>
-          <div className="flex items-center gap-1">
-            <Lock className="w-3 h-3 text-ios-gray" />
-            <span className="text-[11px] text-ios-gray">已加密</span>
-          </div>
-        </div>
-
-        {/* 时间分隔线 */}
-        <div className="flex justify-center mb-3">
-          <span className="text-[11px] text-ios-gray">今天 {timeStr}</span>
-        </div>
-
-        {/* 消息列表 */}
-        <AnimatePresence initial={false}>
-          {currentSession.messages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              message={message}
-              isLastPlayerMessage={message.id === lastPlayerId}
-            />
-          ))}
-        </AnimatePresence>
-
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* ===== 底部输入区域 ===== */}
-      <div className="shrink-0">
-        {/* 倒计时提示（剩余10秒时显示） */}
-        {countdown <= 10 && countdown > 0 && (
-          <motion.div
-            className="flex justify-center py-1 bg-white/60 backdrop-blur"
-            animate={{ opacity: [1, 0.5, 1] }}
-            transition={{ duration: 0.5, repeat: Infinity }}
-          >
-            <span className="text-[12px] text-ios-red font-semibold">
-              {countdown} 秒后超时失败
-            </span>
-          </motion.div>
-        )}
-
-        {/* 输入栏 */}
-        <div className="flex items-end gap-2 px-3 py-2 bg-ios-bg">
-          {/* + 按钮 */}
-          <motion.button
-            className="w-8 h-8 rounded-full flex items-center justify-center mb-1 shrink-0"
-            style={{ background: '#007AFF' }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <Plus className="w-5 h-5 text-white" />
-          </motion.button>
-
-          {/* 输入框 */}
-          <div className="flex-1 bg-white rounded-full flex items-center px-4 py-2 min-h-[36px] border border-black/[0.04]">
-            <input
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-              placeholder="iMessage 信息"
-              className="w-full text-[16px] outline-none bg-transparent placeholder:text-ios-gray"
-              autoFocus
-            />
-          </div>
-
-          {/* 发送/麦克风按钮 */}
-          {inputValue.trim() ? (
-            <motion.button
-              onClick={handleSendMessage}
-              className="w-8 h-8 rounded-full flex items-center justify-center mb-1 shrink-0"
-              style={{ background: '#007AFF' }}
-              whileTap={{ scale: 0.9 }}
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ type: 'spring', stiffness: 500 }}
-            >
-              <ArrowUp className="w-5 h-5 text-white" />
-            </motion.button>
-          ) : (
-            <motion.button
-              className="w-8 h-8 flex items-center justify-center mb-1 shrink-0"
-              whileTap={{ scale: 0.9 }}
-            >
-              <Mic className="w-6 h-6 text-ios-blue" />
-            </motion.button>
-          )}
-        </div>
-
-        {/* 结束聊天 */}
+    <div className="h-screen flex flex-col bg-white">
+      {/* Header */}
+      <div className="glass flex items-center px-3 py-2 safe-top">
         <button
-          onClick={handleEndChat}
-          className="w-full text-center text-[11px] text-ios-gray py-1.5 bg-ios-bg"
+          onClick={() => nav(-1)}
+          className="w-10 h-10 -ml-1 flex items-center justify-center rounded-full tap-scale"
         >
-          结束聊天，做出判断
+          <ArrowLeft size={22} className="text-ios-blue" />
         </button>
+        <div className="flex-1 flex items-center gap-2 justify-center">
+          <Avatar avatar={avatar} size={32} />
+          <div className="text-center leading-tight">
+            <div className="font-semibold text-sm text-ios-label">{avatar.name}</div>
+            <div className="text-[10px] text-green-500 flex items-center justify-center gap-1">
+              <span className="status-dot bg-green-500" /> 在线 · 已启用 AI 记忆
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-1">
+          <button className="w-10 h-10 flex items-center justify-center rounded-full tap-scale text-ios-blue">
+            <Video size={20} />
+          </button>
+          <button className="w-10 h-10 flex items-center justify-center rounded-full tap-scale text-ios-blue">
+            <Phone size={20} />
+          </button>
+          <button
+            onClick={deleteSession}
+            className="w-10 h-10 flex items-center justify-center rounded-full tap-scale text-ios-label3"
+            aria-label="删除对话"
+          >
+            <Trash2 size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto px-4 py-3 bg-white no-scrollbar"
+      >
+        {groups.map((g, gi) => (
+          <div key={gi}>
+            <div className="flex justify-center my-3">
+              <span className="text-[11px] text-ios-label3 bg-ios-card2 px-2 py-0.5 rounded-full">
+                {g.day}
+              </span>
+            </div>
+            {g.items.map((m, i) => {
+              const prev = i > 0 ? g.items[i - 1] : null;
+              const showTime = !prev || m.time - prev.time > 300000;
+              const isUser = m.role === 'user';
+              const isTyping = m.text === '__typing__';
+              return (
+                <div key={m.id} className="fade-in">
+                  {showTime && !isTyping && (
+                    <div className={`text-[10px] text-ios-label3 mb-1 ${isUser ? 'text-right' : 'text-center'}`}>
+                      {formatTime(m.time)}
+                    </div>
+                  )}
+                  <div className={`flex items-end gap-2 my-1 ${isUser ? 'justify-end' : 'justify-start'}`}>
+                    {!isUser && (
+                      <div className="mb-0.5">
+                        <Avatar avatar={avatar} size={28} />
+                      </div>
+                    )}
+                    <div className="flex flex-col gap-0.5 max-w-[80%]">
+                      {m.image && (
+                        <img
+                          src={m.image}
+                          alt=""
+                          className="rounded-2xl max-w-[220px] object-cover"
+                        />
+                      )}
+                      {m.voice && (
+                        <div className={`bubble ${isUser ? 'bubble-out' : 'bubble-in'} flex items-center gap-2`}>
+                          <Mic size={14} />
+                          <div className="flex items-center gap-0.5">
+                            {Array.from({ length: 4 }).map((_, k) => (
+                              <span
+                                key={k}
+                                className="w-0.5 h-3 rounded-full bg-current opacity-80"
+                                style={{ height: 4 + k * 3 }}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs">{m.voice.duration}″</span>
+                        </div>
+                      )}
+                      {m.text && !isTyping && (
+                        <div className={`bubble ${isUser ? 'bubble-out' : 'bubble-in'}`}>{m.text}</div>
+                      )}
+                      {isTyping && (
+                        <div className="bubble bubble-in flex items-center gap-1.5 py-3">
+                          <span className="typing-dot" />
+                          <span className="typing-dot" />
+                          <span className="typing-dot" />
+                        </div>
+                      )}
+                      {isUser && !isTyping && (
+                        <div className={`flex items-center gap-1 text-[10px] text-ios-label3 ${isUser ? 'justify-end' : ''}`}>
+                          {m.status === 'sending' && <Clock size={10} />}
+                          {m.status === 'sent' && <Check size={12} />}
+                          {m.status === 'read' && <CheckCheck size={14} />}
+                          {m.status === 'read' && <span className="text-ios-label3">已读</span>}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+
+      {/* Memory badge */}
+      {session.memory.length > 0 && (
+        <div className="px-3 py-1 text-[10px] text-ios-label3 bg-ios-card2 flex items-center gap-1 border-t border-ios-separator">
+          <Brain size={12} />
+          <span className="truncate">AI 记忆：{session.memory.join('；')}</span>
+        </div>
+      )}
+
+      {/* Emoji panel */}
+      {showEmoji && (
+        <div className="bg-white border-t border-ios-separator py-2 px-3 grid grid-cols-8 gap-1 fade-in">
+          {EMOJI_PANEL.map((e) => (
+            <button
+              key={e}
+              onClick={() => setInput((v) => v + e)}
+              className="text-xl py-1 rounded hover:bg-ios-card2 transition-colors"
+            >
+              {e}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Input bar */}
+      <div className="input-bar pb-safe">
+        <button
+          onClick={() => fileRef.current?.click()}
+          className="w-9 h-9 rounded-full bg-ios-card2 flex items-center justify-center tap-scale"
+        >
+          <ImagePlus size={20} className="text-ios-label3" />
+        </button>
+        <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={onFile} />
+        <div className="flex-1 flex items-center gap-1 bg-ios-card2 rounded-full pl-3 pr-1 py-1">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') send();
+            }}
+            onFocus={() => setShowEmoji(false)}
+            className="flex-1 ios-input text-[15px]"
+            placeholder="iMessage"
+          />
+          <button
+            onClick={() => setShowEmoji((v) => !v)}
+            className="w-8 h-8 rounded-full flex items-center justify-center tap-scale"
+          >
+            <Smile size={20} className="text-ios-label3" />
+          </button>
+        </div>
+        {input.trim() ? (
+          <button
+            onClick={send}
+            className="w-9 h-9 rounded-full bg-ios-blue text-white flex items-center justify-center tap-scale"
+          >
+            <Send size={18} />
+          </button>
+        ) : (
+          <button
+            onClick={startVoice}
+            className="w-9 h-9 rounded-full bg-ios-blue text-white flex items-center justify-center tap-scale"
+          >
+            <Mic size={18} />
+          </button>
+        )}
       </div>
     </div>
-  );
-}
-
-// 找到最后一条发送的消息ID，用于显示已读状态
-function getLastPlayerMessageId(messages: Message[]) {
-  for (let i = messages.length - 1; i >= 0; i--) {
-    if (messages[i].sender === 'player') return messages[i].id;
-  }
-  return null;
-}
-
-// ===== iMessage 真实气泡组件 =====
-function MessageBubble({
-  message,
-  isLastPlayerMessage,
-}: {
-  message: Message;
-  isLastPlayerMessage: boolean;
-}) {
-  const isPlayer = message.sender === 'player';
-  const timeStr = message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-      className={`flex ${isPlayer ? 'justify-end' : 'justify-start'} mb-0.5`}
-    >
-      <div className="flex flex-col max-w-[75%]">
-        <div className={isPlayer ? 'bubble-sent' : 'bubble-received'}>
-          <span className="text-[16px] leading-[22px] whitespace-pre-wrap break-words">
-            {message.text}
-          </span>
-        </div>
-
-        {/* 已读状态 - 只在最后一条发送消息显示 */}
-        {isPlayer && isLastPlayerMessage && message.status === 'read' && (
-          <motion.div
-            className="flex items-center justify-end gap-1 mt-0.5 px-1"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            <span className="text-[11px] text-ios-gray">{timeStr} 已读</span>
-          </motion.div>
-        )}
-      </div>
-    </motion.div>
   );
 }

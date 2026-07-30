@@ -1,29 +1,57 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { GameProvider } from './context/GameContext';
+import { BrowserRouter as Router, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import { StoreProvider } from './store/Store';
 import HomePage from './pages/HomePage';
-import MatchPage from './pages/MatchPage';
+import ExplorePage from './pages/ExplorePage';
 import ChatPage from './pages/ChatPage';
-import JudgePage from './pages/JudgePage';
-import ResultPage from './pages/ResultPage';
 import ProfilePage from './pages/ProfilePage';
+import SessionsPage from './pages/SessionsPage';
+import CreatePage from './pages/CreatePage';
+import AvatarDetailPage from './pages/AvatarDetailPage';
+import LoginPage from './pages/LoginPage';
 import SettingsPage from './pages/SettingsPage';
-import './index.css';
+import BottomNav from './components/BottomNav';
+import { useEffect } from 'react';
+
+function PageShell() {
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
+
+  const noNavPaths = ['/chat/'];
+  const hideNav = noNavPaths.some((p) => location.pathname.startsWith(p));
+
+  return (
+    <div className="device-shell">
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-1 flex flex-col">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/create" element={<CreatePage />} />
+            <Route path="/chats" element={<SessionsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/avatar/:id" element={<AvatarDetailPage />} />
+            <Route path="/chat/:sessionId" element={<ChatPage />} />
+            <Route path="/chat/new/:avatarId" element={<ChatPage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+        {!hideNav && <BottomNav />}
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
-    <GameProvider>
+    <StoreProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/match" element={<MatchPage />} />
-          <Route path="/chat" element={<ChatPage />} />
-          <Route path="/judge" element={<JudgePage />} />
-          <Route path="/result" element={<ResultPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/settings" element={<SettingsPage />} />
-        </Routes>
+        <PageShell />
       </Router>
-    </GameProvider>
+    </StoreProvider>
   );
 }
 

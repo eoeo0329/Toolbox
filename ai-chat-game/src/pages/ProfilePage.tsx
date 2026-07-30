@@ -1,225 +1,180 @@
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useGame } from '../context/GameContext';
-import {
-  ChevronLeft,
-  Target,
-  TrendingUp,
-  Flame,
-  Star,
-  Medal,
-  Gamepad2,
-  Crosshair,
-  Crown,
-  Gem,
-  Sparkles,
-  Check,
-  X,
-} from 'lucide-react';
-import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
+import { UserCircle2, MessageCircle, Settings, Edit3, Sparkles, ChevronRight, Camera } from 'lucide-react';
+import { useStore } from '../store/Store';
+import Avatar from '../components/Avatar';
 
 export default function ProfilePage() {
-  const navigate = useNavigate();
-  const { state } = useGame();
-  const { playerStats, gameHistory } = state;
+  const { state } = useStore();
+  const nav = useNavigate();
 
-  const accuracy = playerStats.totalGames > 0
-    ? Math.round((playerStats.correctGuesses / playerStats.totalGames) * 100)
-    : 0;
-
-  const achievements = getAchievements(playerStats);
+  const favs = state.avatars.filter((a) => state.favorites.includes(a.id));
+  const mySessions = state.sessions;
 
   return (
-    <div className="page-ios min-h-screen pb-24">
-      {/* 顶部栏 */}
-      <div className="ios-nav-bar sticky top-0 z-10 flex items-center gap-2 px-2 py-2">
-        <motion.button
-          onClick={() => navigate('/')}
-          className="p-1.5 rounded-full active:bg-black/5 transition-colors"
-          whileTap={{ scale: 0.9 }}
-        >
-          <ChevronLeft className="w-7 h-7 text-ios-blue" strokeWidth={2.5} />
-        </motion.button>
-        <h1 className="text-[17px] font-semibold text-ios-label ml-2">个人记录</h1>
-      </div>
-
-      {/* 等级卡片 */}
-      <div className="px-4 pt-4">
-        <div className="ios-list-item p-5">
-          <div className="flex items-center gap-4 mb-3">
-            <div className="w-16 h-16 rounded-2xl bg-ios-blue flex items-center justify-center">
-              <span className="text-2xl font-bold text-white">{playerStats.level}</span>
-            </div>
-            <div className="flex-1">
-              <h2 className="text-xl font-bold text-ios-label">Lv.{playerStats.level}</h2>
-              <p className="text-sm text-ios-gray">
-                {playerStats.experience} / {playerStats.level * 100} XP
-              </p>
-            </div>
-          </div>
-
-          {/* 经验条 */}
-          <div className="w-full h-1.5 bg-ios-gray/15 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-ios-blue rounded-full"
-              initial={{ width: 0 }}
-              animate={{ width: `${(playerStats.experience / (playerStats.level * 100)) * 100}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* 统计数据 */}
-      <div className="px-4 mt-4 grid grid-cols-2 gap-3">
-        <div className="ios-list-item p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Target className="w-4 h-4 text-ios-blue" />
-            <span className="text-[13px] text-ios-gray">总场次</span>
-          </div>
-          <p className="text-2xl font-bold text-ios-label">{playerStats.totalGames}</p>
+    <div>
+      {/* Header */}
+      <div className="aurora pt-safe pb-6 px-5">
+        <div className="flex items-center justify-between mb-5">
+          <h1 className="text-[22px] font-bold text-ios-label">我的</h1>
+          <button
+            onClick={() => nav('/settings')}
+            className="w-9 h-9 rounded-full bg-white shadow-inner2 flex items-center justify-center tap-scale"
+          >
+            <Settings size={18} className="text-ios-label3" />
+          </button>
         </div>
 
-        <div className="ios-list-item p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-ios-green" />
-            <span className="text-[13px] text-ios-gray">正确率</span>
-          </div>
-          <p className="text-2xl font-bold text-ios-label">{accuracy}%</p>
-        </div>
-
-        <div className="ios-list-item p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Flame className="w-4 h-4 text-ios-orange" />
-            <span className="text-[13px] text-ios-gray">最高连胜</span>
-          </div>
-          <p className="text-2xl font-bold text-ios-label">{playerStats.maxStreak}</p>
-        </div>
-
-        <div className="ios-list-item p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Star className="w-4 h-4 text-ios-orange" />
-            <span className="text-[13px] text-ios-gray">当前连胜</span>
-          </div>
-          <p className="text-2xl font-bold text-ios-label">{playerStats.winStreak}</p>
-        </div>
-      </div>
-
-      {/* 成就 */}
-      <div className="px-4 mt-6">
-        <h3 className="text-[13px] uppercase text-ios-gray font-medium mb-2 px-1 flex items-center gap-1.5">
-          <Medal className="w-3.5 h-3.5" />
-          成就
-        </h3>
-        <div className="ios-list-item p-3 grid grid-cols-3 gap-2">
-          {achievements.map((achievement, index) => (
-            <motion.div
-              key={index}
-              className="flex flex-col items-center py-2 rounded-xl"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: achievement.unlocked ? 1 : 0.35, scale: 1 }}
-              transition={{ delay: 0.3 + index * 0.05 }}
-            >
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-colors ${
-                  achievement.unlocked
-                    ? achievement.bgColor
-                    : 'bg-ios-gray/10'
-                }`}
-              >
-                <achievement.icon
-                  className={`w-5 h-5 ${
-                    achievement.unlocked ? achievement.color : 'text-ios-gray'
-                  }`}
-                  strokeWidth={2}
-                />
+        {state.user ? (
+          <div className="flex items-center gap-3">
+            <div className="relative">
+              <div className="w-[72px] h-[72px] rounded-full grad-1 flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                {state.user.name.slice(0, 1)}
               </div>
-              <p className={`text-[11px] font-medium text-center ${
-                achievement.unlocked ? 'text-ios-label' : 'text-ios-gray'
-              }`}>
-                {achievement.name}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* 历史记录 */}
-      <div className="px-4 mt-6">
-        <h3 className="text-[13px] uppercase text-ios-gray font-medium mb-2 px-1">
-          最近记录
-        </h3>
-
-        {gameHistory.length === 0 ? (
-          <div className="ios-list-item p-8 text-center text-ios-gray">
-            <p>暂无记录</p>
-            <p className="text-sm mt-1">开始游戏以记录你的战绩</p>
+              <button className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-ios-blue flex items-center justify-center text-white shadow-md">
+                <Camera size={14} />
+              </button>
+            </div>
+            <div>
+              <div className="text-xl font-bold text-ios-label">{state.user.name}</div>
+              <div className="text-xs text-ios-label3">{state.user.email || '未绑定邮箱'}</div>
+              <div className="text-[11px] text-ios-label3 mt-0.5">{state.user.bio || '这个人很懒，什么都没写'}</div>
+            </div>
           </div>
         ) : (
-          <div className="ios-list-item overflow-hidden">
-            {gameHistory.slice(-10).reverse().map((game, index) => (
-              <motion.div
-                key={game.id}
-                className={`flex items-center justify-between p-3 ${
-                  index !== Math.min(gameHistory.length, 10) - 1 ? 'border-b border-ios-separator' : ''
-                }`}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + index * 0.05 }}
-              >
-                <div className="flex items-center gap-3">
-                  <DefaultContactAvatar size={40} />
-                  <div>
-                    <p className="font-medium text-[15px] text-ios-label">TA</p>
-                    <p className="text-[12px] text-ios-gray">
-                      {game.partner.isAI ? 'AI' : '真人'}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <span className="text-[15px] text-ios-blue font-medium">
-                    +{game.score}
-                  </span>
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${
-                      game.isCorrect ? 'bg-ios-green' : 'bg-ios-red'
-                    }`}
-                  >
-                    {game.isCorrect ? (
-                      <Check className="w-3.5 h-3.5" strokeWidth={3} />
-                    ) : (
-                      <X className="w-3.5 h-3.5" strokeWidth={3} />
-                    )}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+          <div
+            onClick={() => nav('/login')}
+            className="flex items-center gap-3 cursor-pointer tap-scale"
+          >
+            <div className="w-[72px] h-[72px] rounded-full bg-white shadow-inner2 flex items-center justify-center">
+              <UserCircle2 size={50} className="text-ios-label3" />
+            </div>
+            <div>
+              <div className="text-xl font-bold text-ios-label">点击登录</div>
+              <div className="text-xs text-ios-label3">登录后可以同步收藏和对话</div>
+            </div>
           </div>
+        )}
+
+        {/* Stats */}
+        <div className="mt-5 grid grid-cols-3 gap-2">
+          <div className="card py-3 text-center">
+            <div className="text-xl font-bold">{favs.length}</div>
+            <div className="text-[11px] text-ios-label3">收藏</div>
+          </div>
+          <div className="card py-3 text-center">
+            <div className="text-xl font-bold">{mySessions.length}</div>
+            <div className="text-[11px] text-ios-label3">对话</div>
+          </div>
+          <div className="card py-3 text-center">
+            <div className="text-xl font-bold">{state.avatars.filter((a) => a.custom).length}</div>
+            <div className="text-[11px] text-ios-label3">自创 AI</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Menu list */}
+      <div className="px-5 mt-4 space-y-4">
+        <div className="cell-group">
+          <div
+            className="cell cursor-pointer"
+            onClick={() => nav('/chats')}
+          >
+            <div className="w-9 h-9 rounded-lg grad-5 flex items-center justify-center text-white">
+              <MessageCircle size={18} />
+            </div>
+            <div className="flex-1 font-medium text-ios-label">对话历史</div>
+            {state.sessions.some((s) => s.unread > 0) && (
+              <span className="min-w-[18px] h-[18px] px-1 rounded-full bg-ios-pink text-white text-[10px] font-bold flex items-center justify-center">
+                {state.sessions.reduce((acc, s) => acc + s.unread, 0)}
+              </span>
+            )}
+            <ChevronRight size={16} className="text-ios-label3" />
+          </div>
+          <div
+            className="cell cursor-pointer"
+            onClick={() => nav('/create')}
+          >
+            <div className="w-9 h-9 rounded-lg grad-4 flex items-center justify-center text-white">
+              <Edit3 size={16} />
+            </div>
+            <div className="flex-1 font-medium text-ios-label">创建 AI 角色</div>
+            <Sparkles size={14} className="text-ios-label3" />
+            <ChevronRight size={16} className="text-ios-label3" />
+          </div>
+          <div
+            className="cell cursor-pointer"
+            onClick={() => nav('/settings')}
+          >
+            <div className="w-9 h-9 rounded-lg grad-3 flex items-center justify-center text-white">
+              <Settings size={16} />
+            </div>
+            <div className="flex-1 font-medium text-ios-label">设置</div>
+            <ChevronRight size={16} className="text-ios-label3" />
+          </div>
+        </div>
+
+        {/* Favorites */}
+        {favs.length > 0 && (
+          <div>
+            <h3 className="text-xs text-ios-label3 mb-2 px-1">我收藏的 AI</h3>
+            <div className="card p-3 flex gap-3 overflow-x-auto scroll-x">
+              {favs.map((a) => (
+                <button
+                  key={a.id}
+                  onClick={() => nav(`/avatar/${a.id}`)}
+                  className="flex flex-col items-center gap-1 flex-shrink-0 tap-scale"
+                >
+                  <Avatar avatar={a} size={56} rounded="xl" />
+                  <span className="text-[11px] text-ios-label2 w-16 truncate text-center">{a.name}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Memory */}
+        {state.sessions.filter((s) => s.memory.length > 0).length > 0 && (
+          <div>
+            <h3 className="text-xs text-ios-label3 mb-2 px-1">AI 记忆</h3>
+            <div className="space-y-2">
+              {state.sessions
+                .filter((s) => s.memory.length > 0)
+                .slice(0, 3)
+                .map((s) => {
+                  const a = state.avatars.find((av) => av.id === s.avatarId);
+                  if (!a) return null;
+                  return (
+                    <div key={s.id} className="card p-3 flex items-start gap-3">
+                      <Avatar avatar={a} size={36} rounded="xl" />
+                      <div className="flex-1 text-xs text-ios-label2">
+                        <div className="font-semibold text-ios-label mb-1">{a.name} 记得：</div>
+                        <div className="line-clamp-2">{s.memory.join('；')}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+        )}
+
+        {state.user && (
+          <button
+            onClick={() => {
+              if (confirm('确定要退出登录吗？')) {
+                useStore; // stub
+                // Can't use hook here, use the dispatch via window
+                localStorage.removeItem('aura_chat_state_v1');
+                location.reload();
+              }
+            }}
+            className="w-full py-3 rounded-full bg-white text-ios-red font-semibold text-sm tap-scale shadow-inner2"
+          >
+            退出登录
+          </button>
         )}
       </div>
 
-      {/* 底部按钮 */}
-      <div className="fixed bottom-8 left-0 right-0 px-6 max-w-md mx-auto">
-        <motion.button
-          onClick={() => navigate('/match')}
-          className="w-full ios-button-primary py-4 text-[17px] font-semibold"
-          whileTap={{ scale: 0.98 }}
-        >
-          开始新挑战
-        </motion.button>
-      </div>
+      <div className="h-6" />
     </div>
   );
-}
-
-function getAchievements(stats: any) {
-  return [
-    { icon: Gamepad2, name: '新手', color: 'text-ios-blue', bgColor: 'bg-ios-blue/15', unlocked: stats.totalGames >= 1 },
-    { icon: Crosshair, name: '神射手', color: 'text-ios-red', bgColor: 'bg-ios-red/15', unlocked: stats.correctGuesses >= 10 },
-    { icon: Flame, name: '连胜王', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.maxStreak >= 5 },
-    { icon: Crown, name: '大师', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.level >= 10 },
-    { icon: Gem, name: '钻石', color: 'text-ios-blue', bgColor: 'bg-ios-blue/15', unlocked: stats.totalGames >= 50 },
-    { icon: Sparkles, name: '传奇', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.maxStreak >= 10 },
-  ];
 }

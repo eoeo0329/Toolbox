@@ -1,59 +1,54 @@
-export type AIPersonality = 'cold' | 'energetic' | 'humorous' | 'rational' | 'emotional';
+export type Gender = 'female' | 'male' | 'other';
 
-export type MessageStatus = 'sent' | 'delivered' | 'read';
+export interface AIAvatar {
+  id: string;
+  name: string;
+  personality: string;
+  bio: string;
+  description: string;
+  category: string;
+  tags: string[];
+  gender: Gender;
+  age: number;
+  height?: string;
+  creator: string;
+  views: number;
+  chats: number;
+  gradient: string; // gradient class e.g. grad-1
+  emoji: string;
+  sampleReplies: string[]; // sample opening / responses
+  isNew?: boolean;
+  isFeatured?: boolean;
+  custom?: boolean;
+}
 
 export interface Message {
   id: string;
-  text: string;
-  sender: 'player' | 'opponent';
-  timestamp: Date;
-  status?: MessageStatus;
-  readAt?: Date;
+  role: 'user' | 'ai' | 'system';
+  text?: string;
+  image?: string;
+  voice?: { duration: number };
+  time: number;
+  status?: 'sending' | 'sent' | 'read';
 }
 
-export interface ChatPartner {
+export interface ChatSession {
   id: string;
-  name: string;
-  avatar: string;
-  isOnline: boolean;
-  isAI: boolean;
-  personality?: AIPersonality;
-}
-
-export interface GameSession {
-  id: string;
-  partner: ChatPartner;
+  avatarId: string;
+  title: string;
   messages: Message[];
-  startTime: Date;
-  endTime?: Date;
-  playerGuess?: 'human' | 'ai';
-  opponentGuess?: 'human' | 'ai';
-  isCorrect?: boolean;
-  opponentCorrect?: boolean;
-  score: number;
+  lastTime: number;
+  unread: number;
+  memory: string[]; // AI memory facts
 }
 
-export interface PlayerStats {
-  totalGames: number;
-  correctGuesses: number;
-  winStreak: number;
-  maxStreak: number;
-  level: number;
-  experience: number;
-  achievements: string[];
-  averageTime: number;
-}
-
-export interface Achievement {
+export interface User {
   id: string;
   name: string;
-  description: string;
-  icon: string;
-  unlockedAt?: Date;
+  avatar?: string;
+  email?: string;
+  bio?: string;
+  joinedAt: number;
 }
 
-export type AIResponse = {
-  personality: AIPersonality;
-  response: string;
-  delay: number;
-};
+export type Tab = 'home' | 'explore' | 'create' | 'chats' | 'profile';
