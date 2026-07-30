@@ -22,7 +22,7 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { currentSession, isTyping } = state;
+  const { currentSession } = state;
 
   // 倒计时逻辑
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function ChatPage() {
   // 自动滚动
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [currentSession?.messages, isTyping]);
+  }, [currentSession?.messages]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim() || !currentSession) return;
@@ -173,23 +173,6 @@ export default function ChatPage() {
             />
           ))}
         </AnimatePresence>
-
-        {/* 正在输入指示器 */}
-        {isTyping && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex justify-start mb-1"
-          >
-            <div className="bubble-received">
-              <div className="flex items-center gap-1 py-1">
-                <div className="w-1.5 h-1.5 bg-ios-gray rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-1.5 h-1.5 bg-ios-gray rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-1.5 h-1.5 bg-ios-gray rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-              </div>
-            </div>
-          </motion.div>
-        )}
 
         <div ref={messagesEndRef} />
       </div>
