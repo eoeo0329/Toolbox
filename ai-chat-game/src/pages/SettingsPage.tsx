@@ -22,7 +22,6 @@ import {
   Trash2,
   Star,
   Share2,
-  X,
   Check,
   Copy,
   Send,
@@ -655,7 +654,7 @@ export default function SettingsPage() {
       {/* 评价 */}
       <Sheet open={sheet?.type === 'rate'} onClose={() => setSheet(null)} title="评价">
         <RateView
-          onSubmit={(stars, text) => {
+          onSubmit={(stars, _text) => {
             showToast(`感谢你的 ${stars} 星评价！`);
             setSheet(null);
           }}

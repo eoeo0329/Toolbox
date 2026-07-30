@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, type ReactNode } from 'react';
 import type { GameSession, Message, ChatPartner, PlayerStats, AIPersonality } from '../types';
 import { getContextualResponse, getResponseDelay, generateAIName } from '../utils/aiResponses';
 import { chatWithAI } from '../utils/api';
@@ -78,19 +78,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         status: 'sent',
       };
 
-      // AI自动回复
+      // AI自动回复（保留旧逻辑骨架，实际回复由 sendMessage 函数里的后端调用处理）
       const personality = state.currentSession.partner.personality || 'rational';
-      const aiResponse = getContextualResponse(personality, action.payload.text);
       const delay = getResponseDelay(personality);
+      void getContextualResponse(personality, action.payload.text);
 
       setTimeout(() => {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: aiResponse,
-          sender: 'opponent',
-          timestamp: new Date(),
-        };
-        // 这个会在组件中处理
+        // 实际回复由 sendMessage 函数统一派发 RECEIVE_MESSAGE action
       }, delay);
 
       return {
@@ -289,7 +283,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     // 显示正在输入
     const personality = state.currentSession.partner.personality || 'rational';
     const typingDelay = 500 + Math.random() * 1000;
-    const responseDelay = getResponseDelay(personality);
+    void getResponseDelay(personality);
 
     setTimeout(() => {
       dispatch({ type: 'SET_TYPING', payload: true });

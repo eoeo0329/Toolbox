@@ -11,7 +11,6 @@ import {
   Info,
 } from 'lucide-react';
 import type { Message } from '../types';
-import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
 
 export default function ChatPage() {
   const navigate = useNavigate();

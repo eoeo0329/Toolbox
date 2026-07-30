@@ -26,15 +26,21 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // =================== 基础中间件 ===================
-app.use(helmet());                          // 安全响应头
-// CORS：支持 .env 里逗号分隔的多个 origin
-const allowedOrigins = (process.env.CORS_ORIGIN || '*').split(',').map((s) => s.trim());
+app.use(helmet({
+  // 部署到 Vercel/Render 等平台时放宽 CSP，否则 iframe / 静态资源可能被拦截
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
+}));
+// CORS：支持 .env 里逗号分隔的多个 origin；未配置则允许所有 origin（方便 Vercel + Render 动态域名配对）
+const corsOriginEnv = process.env.CORS_ORIGIN;
+const allowedOrigins = corsOriginEnv ? corsOriginEnv.split(',').map((s) => s.trim()) : null;
 app.use(cors({
   origin: (origin, cb) => {
+    // 未配置白名单 -> 放行所有来源（前后端分离部署场景）
+    if (!allowedOrigins) return cb(null, true);
     if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
       cb(null, true);
     } else {
-      cb(new Error('Not allowed by CORS'));
+      cb(new Error('Not allowed by CORS: ' + origin));
     }
   },
   credentials: true,
