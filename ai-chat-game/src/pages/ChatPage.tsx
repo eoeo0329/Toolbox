@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 import {
   ChevronLeft,
-  Video,
   Plus,
   Mic,
   ArrowUp,
@@ -74,27 +73,8 @@ export default function ChatPage() {
     <div className="h-screen flex flex-col bg-[#F2F2F7] text-black">
       {/* ===== 顶部导航栏 ===== */}
       <div className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shrink-0 z-10">
-        {/* 第一行：返回 + 头像 + 视频 */}
-        <div className="flex items-center justify-between px-2 pt-2 pb-1">
-          <div className="flex items-center gap-1">
-            <motion.button
-              onClick={() => navigate('/')}
-              className="p-1.5 rounded-full active:bg-gray-100 transition-colors"
-              whileTap={{ scale: 0.9 }}
-            >
-              <ChevronLeft className="w-7 h-7 text-[#007AFF]" strokeWidth={2.5} />
-            </motion.button>
-            <div className="relative">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-white">
-                <img src={partner.avatar} alt="" className="w-full h-full rounded-full object-cover" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#007AFF] rounded-full flex items-center justify-center text-[10px] font-bold text-white">
-                {currentSession.messages.filter(m => m.sender === 'player').length || '1'}
-              </div>
-            </div>
-          </div>
-
-          {/* 中间：大头像 + 名字 */}
+        {/* 居中：大头像 + 名字（固定显示 "TA"） */}
+        <div className="flex justify-center pt-2 pb-1.5">
           <div className="flex flex-col items-center">
             <img
               src={partner.avatar}
@@ -102,17 +82,10 @@ export default function ChatPage() {
               className="w-10 h-10 rounded-full object-cover"
             />
             <div className="flex items-center gap-0.5 mt-0.5">
-              <span className="text-[13px] font-semibold text-black">{partner.name}</span>
+              <span className="text-[13px] font-semibold text-black">TA</span>
               <ChevronLeft className="w-3 h-3 text-gray-400 rotate-180" />
             </div>
           </div>
-
-          <motion.button
-            className="p-2 rounded-full active:bg-gray-100 transition-colors"
-            whileTap={{ scale: 0.9 }}
-          >
-            <Video className="w-6 h-6 text-[#007AFF]" />
-          </motion.button>
         </div>
       </div>
 
