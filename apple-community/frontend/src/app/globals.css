@@ -1,0 +1,170 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background-color: #F2F2F7;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior-y: contain;
+}
+
+.dark body,
+body.dark {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+
+/* iOS style scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(142, 142, 147, 0.4);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(142, 142, 147, 0.6);
+}
+
+/* Glassmorphism */
+@layer components {
+  .glass {
+    @apply bg-white/70 dark:bg-black/60 backdrop-blur-xl backdrop-saturate-150;
+  }
+  
+  .glass-light {
+    @apply bg-white/60 backdrop-blur-lg;
+  }
+  
+  .glass-dark {
+    @apply bg-black/50 backdrop-blur-xl;
+  }
+  
+  .ios-card {
+    @apply bg-surface-light dark:bg-surface-dark rounded-ios shadow-ios;
+  }
+  
+  .ios-list-item {
+    @apply bg-surface-light dark:bg-surface-dark;
+  }
+  
+  .ios-divider {
+    @apply h-px bg-ios-gray5 dark:bg-white/10;
+  }
+  
+  .safe-area-top {
+    padding-top: var(--safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: var(--safe-area-inset-bottom);
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Switch styles */
+.ios-switch {
+  position: relative;
+  width: 51px;
+  height: 31px;
+  border-radius: 31px;
+  background-color: #E9E9EB;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dark .ios-switch {
+  background-color: #39393D;
+}
+
+.ios-switch.active {
+  background-color: #34C759;
+}
+
+.ios-switch-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15), 0 3px 1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ios-switch.active .ios-switch-thumb {
+  transform: translateX(20px);
+}
+
+/* Skeleton animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #F2F2F7 0%,
+    #E5E5EA 50%,
+    #F2F2F7 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(
+    90deg,
+    #1C1C1E 0%,
+    #2C2C2E 50%,
+    #1C1C1E 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Nav bar blur effect */
+.nav-blur {
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
