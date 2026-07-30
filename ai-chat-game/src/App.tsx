@@ -7,6 +7,7 @@ import JudgePage from './pages/JudgePage';
 import ResultPage from './pages/ResultPage';
 import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
+import MusicPage from './pages/MusicPage';
 import './index.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
           <Route path="/result" element={<ResultPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/music" element={<MusicPage />} />
         </Routes>
       </Router>
     </GameProvider>
