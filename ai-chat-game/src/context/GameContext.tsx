@@ -148,8 +148,9 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const score = calculateScore(state.currentSession, isCorrect);
 
       // 对方认为你是 AI 还是真人（模拟）
+      // 玩家始终是真人，对方猜"真人"才算对
       const opponentGuess: 'human' | 'ai' = Math.random() > 0.5 ? 'human' : 'ai';
-      const opponentCorrect = opponentGuess === 'ai';
+      const opponentCorrect = opponentGuess === 'human';
 
       const updatedSession: GameSession = {
         ...state.currentSession,
