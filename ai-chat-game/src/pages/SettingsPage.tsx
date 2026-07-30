@@ -183,7 +183,7 @@ function IosToggle({
       <motion.div
         animate={{ x: checked ? 22 : 2 }}
         transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-        className="absolute top-[2px] w-[27px] h-[27px] rounded-full bg-white shadow-sm"
+        className="absolute top-[2px] w-[27px] h-[27px] rounded-full bg-ios-card shadow-sm"
         style={{
           boxShadow:
             '0 3px 8px rgba(0,0,0,0.15), 0 3px 1px rgba(0,0,0,0.06)',
@@ -246,7 +246,7 @@ function SettingGroup({
           {header}
         </h3>
       )}
-      <div className="mx-3 bg-white rounded-[12px] overflow-hidden shadow-sm">{children}</div>
+      <div className="mx-3 bg-ios-card rounded-[12px] overflow-hidden shadow-sm">{children}</div>
       {footer && (
         <p className="px-5 mt-1.5 text-[13px] text-ios-gray leading-relaxed">{footer}</p>
       )}
@@ -571,7 +571,7 @@ export default function SettingsPage() {
                 setTimeout(() => navigate('/'), 500);
               }
             }}
-            className="w-full h-[46px] bg-white rounded-[12px] flex items-center justify-center gap-2 text-[17px] text-ios-red active:bg-black/[0.04] shadow-sm"
+            className="w-full h-[46px] bg-ios-card rounded-[12px] flex items-center justify-center gap-2 text-[17px] text-ios-red active:bg-black/[0.04] shadow-sm"
           >
             <LogOut className="w-[20px] h-[20px]" strokeWidth={1.8} />
             退出登录
@@ -767,7 +767,7 @@ function LanguagePicker({
 }) {
   return (
     <div className="p-3">
-      <div className="mx-3 bg-white rounded-[12px] overflow-hidden shadow-sm">
+      <div className="mx-3 bg-ios-card rounded-[12px] overflow-hidden shadow-sm">
         {options.map((lang, i) => (
           <button
             key={lang}
@@ -808,7 +808,7 @@ function AboutApp() {
         <h3 className="text-[18px] font-semibold text-ios-label">AI挑战中心</h3>
         <p className="text-[13px] text-ios-gray mt-0.5">Version 1.0.0</p>
       </div>
-      <div className="mx-3 bg-white rounded-[12px] overflow-hidden shadow-sm">
+      <div className="mx-3 bg-ios-card rounded-[12px] overflow-hidden shadow-sm">
         {items.map(([k, v], i) => (
           <div
             key={k}
@@ -855,7 +855,7 @@ function PolicyText({ kind }: { kind: 'privacy' | 'data' }) {
         最后更新：2026 年 7 月 30 日
       </p>
       {sections.map(([k, v]) => (
-        <div key={k} className="bg-white rounded-[12px] p-4">
+        <div key={k} className="bg-ios-card rounded-[12px] p-4">
           <div className="text-[15px] font-semibold text-ios-label mb-1">{k}</div>
           <div className="text-[14px] text-ios-secondary leading-relaxed">{v}</div>
         </div>
@@ -882,7 +882,7 @@ function HelpView() {
         </div>
       </div>
       {faqs.map((f, i) => (
-        <div key={i} className="bg-white rounded-[12px] p-4">
+        <div key={i} className="bg-ios-card rounded-[12px] p-4">
           <div className="text-[15px] font-semibold text-ios-label mb-1.5">{f.q}</div>
           <div className="text-[14px] text-ios-secondary leading-relaxed">{f.a}</div>
         </div>
@@ -1028,7 +1028,7 @@ function ShareView({ onCopy }: { onCopy: () => void }) {
   ];
   return (
     <div className="p-4 space-y-5">
-      <div className="bg-white rounded-[16px] p-5 flex items-center gap-4 shadow-sm">
+      <div className="bg-ios-card rounded-[16px] p-5 flex items-center gap-4 shadow-sm">
         <div
           className="w-[60px] h-[60px] rounded-[14px] shrink-0"
           style={{ background: 'linear-gradient(135deg, #007AFF 0%, #5856D6 100%)' }}
@@ -1059,7 +1059,7 @@ function ShareView({ onCopy }: { onCopy: () => void }) {
       </div>
       <button
         onClick={copy}
-        className="w-full h-[48px] bg-white rounded-[12px] text-[16px] font-semibold text-ios-blue shadow-sm active:bg-black/[0.04] flex items-center justify-center gap-2"
+        className="w-full h-[48px] bg-ios-card rounded-[12px] text-[16px] font-semibold text-ios-blue shadow-sm active:bg-black/[0.04] flex items-center justify-center gap-2"
       >
         <Copy className="w-4 h-4" />
         复制邀请链接
@@ -1093,7 +1093,7 @@ function ClearView({
       <div className="flex gap-3">
         <button
           onClick={onCancel}
-          className="flex-1 h-[46px] bg-white rounded-[12px] text-[16px] font-medium text-ios-label shadow-sm"
+          className="flex-1 h-[46px] bg-ios-card rounded-[12px] text-[16px] font-medium text-ios-label shadow-sm"
         >
           取消
         </button>

@@ -20,12 +20,30 @@
     --ios-bubble-received: #E5E5EA;
   }
 
+  /* 深色模式 - iOS Dark */
+  .dark {
+    --ios-blue: #0A84FF;
+    --ios-blue-dark: #0051D5;
+    --ios-green: #30D158;
+    --ios-red: #FF453A;
+    --ios-orange: #FF9F0A;
+    --ios-gray: #98989F;
+    --ios-label: #FFFFFF;
+    --ios-secondary: #EBEBF5;
+    --ios-bg: #000000;
+    --ios-card: #1C1C1E;
+    --ios-separator: rgba(84, 84, 88, 0.6);
+    --ios-bubble-sent: #0A84FF;
+    --ios-bubble-received: #2C2C2E;
+  }
+
   body {
     @apply min-h-screen font-sans antialiased;
     color: var(--ios-label);
     background: var(--ios-bg);
     -webkit-font-smoothing: antialiased;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
