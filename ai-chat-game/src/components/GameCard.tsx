@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 import { Play, Star } from 'lucide-react';
 import type { LucideProps } from 'lucide-react';
 

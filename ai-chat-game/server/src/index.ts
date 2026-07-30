@@ -15,8 +15,9 @@ import { securityAuditLog, rateLimiter, authMiddleware, getClientIP, registerDev
   checkAndAutoBan, getSecurityStats, adminBanUser, adminUnbanUser,
   issueCaptcha, verifyCaptcha, encryptData, decryptData } from './security/middleware';
 import { generateToken, checkLoginAttempts, recordLoginFailure, resetLoginAttempts } from './security/antiBot';
-import { hashPassword, verifyPassword, getAPIKey, securityHeaders, hasPermission } from './security/dataSecurity';
+import { hashPassword, verifyPassword, securityHeaders, hasPermission } from './security/dataSecurity';
 import { getBlockedUsers } from './security/userSafety';
+import { callDeepSeek, getFallbackReply } from './ai/deepseek';
 import type { AuthenticatedRequest } from './security/types';
 
 dotenv.config();
@@ -25,8 +26,25 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // =================== 基础中间件 ===================
-app.use(helmet());                          // 安全响应头
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
+app.use(helmet({
+  // 部署到 Vercel/Render 等平台时放宽 CSP，否则 iframe / 静态资源可能被拦截
+  contentSecurityPolicy: process.env.NODE_ENV === 'production' ? undefined : false,
+}));
+// CORS：支持 .env 里逗号分隔的多个 origin；未配置则允许所有 origin（方便 Vercel + Render 动态域名配对）
+const corsOriginEnv = process.env.CORS_ORIGIN;
+const allowedOrigins = corsOriginEnv ? corsOriginEnv.split(',').map((s) => s.trim()) : null;
+app.use(cors({
+  origin: (origin, cb) => {
+    // 未配置白名单 -> 放行所有来源（前后端分离部署场景）
+    if (!allowedOrigins) return cb(null, true);
+    if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Not allowed by CORS: ' + origin));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json({ limit: '1mb' }));     // 限制请求体大小（防大 payload 攻击）
 app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
@@ -91,6 +109,14 @@ app.post('/api/auth/login', rateLimiter(5, 60000), async (req: AuthenticatedRequ
   res.json({ success: true, token, user: { username } });
 });
 
+// 游客登录（开发联调用，前端自动获取一次性 token）
+app.post('/api/auth/guest', rateLimiter(5, 60000), (req: AuthenticatedRequest, res) => {
+  const deviceId = registerDevice(req);
+  const guestId = `guest_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const token = generateToken(guestId, deviceId);
+  res.json({ success: true, token, user: { username: guestId, isGuest: true } });
+});
+
 // =================== 验证码路由 ===================
 app.get('/api/captcha', (req, res) => {
   const captcha = issueCaptcha();
@@ -137,19 +163,25 @@ app.post('/api/chat/send', authMiddleware, rateLimiter(20, 60000), async (req: A
 });
 
 // =================== AI 聊天路由（需要认证） ===================
+// 接收: { text, personality, history? }
+// 流程: 输入安全检查 -> 调用 DeepSeek -> 输出审核 -> 返回
 app.post('/api/ai/chat', authMiddleware, rateLimiter(15, 60000), async (req: AuthenticatedRequest, res) => {
-  const { text } = req.body;
+  const { text, personality = 'rational', history } = req.body;
   const userId = req.userId!;
 
   if (!text || text.length > 1000) {
     return res.status(400).json({ error: '输入无效', code: 'INVALID_INPUT' });
   }
 
+  const validPersonalities = ['cold', 'energetic', 'humorous', 'rational', 'emotional'];
+  if (!validPersonalities.includes(personality)) {
+    return res.status(400).json({ error: '人格类型无效', code: 'INVALID_PERSONALITY' });
+  }
+
   // 第一步：AI 输入安全检查（防提示词注入）
   const aiSafety = checkAIInputSafety(text);
 
   if (!aiSafety.passed) {
-    // 记录违规
     const { processOutgoingMessage } = await import('./security/contentModeration');
     await processOutgoingMessage(userId, text);
     checkAutoBanAfterViolation(userId);
@@ -162,29 +194,40 @@ app.post('/api/ai/chat', authMiddleware, rateLimiter(15, 60000), async (req: Aut
     });
   }
 
-  // 第二步：调用 AI（模拟，生产环境用 API Key 调用）
-  const apiKey = getAPIKey('openai');
-  // const aiResponse = await callAI(SYSTEM_SAFETY_PROMPT, aiSafety.cleaned, apiKey);
+  // 第二步：调用 DeepSeek
+  const result = await callDeepSeek(aiSafety.cleaned, { personality, history });
 
-  // 模拟 AI 回复
-  const aiResponse = '这是一个模拟的 AI 回复，实际环境中会调用 AI API。';
+  // 第三步：处理结果（失败则降级回复）
+  let aiResponse: string;
+  let degraded = false;
 
-  // 第三步：AI 输出审核
+  if (result.success) {
+    aiResponse = result.reply;
+  } else {
+    // API 失败 -> 使用降级回复（不告诉玩家，保持游戏体验）
+    aiResponse = getFallbackReply(personality);
+    degraded = true;
+    console.warn(`[AI] DeepSeek 调用失败(${result.error})，使用降级回复`);
+  }
+
+  // 第四步：AI 输出审核
   const outputReview = await reviewAIOutput(aiResponse);
 
   if (!outputReview.approved) {
-    return res.status(500).json({
-      error: 'AI 回复未通过内容审核',
-      reason: outputReview.reason,
-      code: 'AI_OUTPUT_BLOCKED',
-    });
+    // 审核未过 -> 用降级回复兜底
+    aiResponse = getFallbackReply(personality);
+    degraded = true;
+    console.warn('[AI] AI 输出未通过审核，已降级');
   }
 
   res.json({
     success: true,
     reply: aiResponse,
+    personality,
     filtered: aiSafety.injectionDetected,
     warning: aiSafety.reason,
+    degraded,
+    tokensUsed: result.tokensUsed,
   });
 });
 

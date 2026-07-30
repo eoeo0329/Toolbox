@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react';
+import React, { createContext, useContext, useReducer, type ReactNode } from 'react';
 import type { GameSession, Message, ChatPartner, PlayerStats, AIPersonality } from '../types';
 import { getContextualResponse, getResponseDelay, generateAIName } from '../utils/aiResponses';
+import { chatWithAI } from '../utils/api';
 
 interface GameState {
   currentSession: GameSession | null;
@@ -77,19 +78,13 @@ function gameReducer(state: GameState, action: GameAction): GameState {
         status: 'sent',
       };
 
-      // AI自动回复
+      // AI自动回复（保留旧逻辑骨架，实际回复由 sendMessage 函数里的后端调用处理）
       const personality = state.currentSession.partner.personality || 'rational';
-      const aiResponse = getContextualResponse(personality, action.payload.text);
       const delay = getResponseDelay(personality);
+      void getContextualResponse(personality, action.payload.text);
 
       setTimeout(() => {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          text: aiResponse,
-          sender: 'opponent',
-          timestamp: new Date(),
-        };
-        // 这个会在组件中处理
+        // 实际回复由 sendMessage 函数统一派发 RECEIVE_MESSAGE action
       }, delay);
 
       return {
@@ -288,7 +283,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     // 显示正在输入
     const personality = state.currentSession.partner.personality || 'rational';
     const typingDelay = 500 + Math.random() * 1000;
-    const responseDelay = getResponseDelay(personality);
+    void getResponseDelay(personality);
 
     setTimeout(() => {
       dispatch({ type: 'SET_TYPING', payload: true });
@@ -296,20 +291,36 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     // AI回复
     if (state.currentSession.partner.isAI) {
-      const aiResponse = getContextualResponse(personality, text);
+      // 构建对话历史（已发送的 + 已接收的）
+      const history = state.currentSession.messages.map(msg => ({
+        role: (msg.sender === 'player' ? 'user' : 'assistant') as 'user' | 'assistant',
+        content: msg.text,
+      }));
 
-      setTimeout(() => {
-        dispatch({ type: 'SET_TYPING', payload: false });
-
-        const aiMessage: Message = {
-          id: Date.now().toString(),
-          text: aiResponse,
-          sender: 'opponent',
-          timestamp: new Date(),
-        };
-
-        dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
-      }, responseDelay);
+      // 调用后端 /api/ai/chat，失败时降级到本地模拟
+      chatWithAI(text, personality, history)
+        .then((result) => {
+          dispatch({ type: 'SET_TYPING', payload: false });
+          const aiMessage: Message = {
+            id: Date.now().toString(),
+            text: result.reply,
+            sender: 'opponent',
+            timestamp: new Date(),
+          };
+          dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
+        })
+        .catch((err) => {
+          console.warn('[AI] 后端调用失败，降级到本地回复:', err.message);
+          const fallback = getContextualResponse(personality, text);
+          dispatch({ type: 'SET_TYPING', payload: false });
+          const aiMessage: Message = {
+            id: Date.now().toString(),
+            text: fallback,
+            sender: 'opponent',
+            timestamp: new Date(),
+          };
+          dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
+        });
     } else {
       // 真人回复（模拟）
       const humanDelay = 3000 + Math.random() * 5000;

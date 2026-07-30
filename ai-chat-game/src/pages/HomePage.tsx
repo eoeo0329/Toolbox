@@ -6,7 +6,6 @@ import {
   User, 
   Sparkles, 
   ChevronRight,
-  Star,
   Zap,
   Calendar,
   Settings
