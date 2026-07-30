@@ -21,7 +21,7 @@ export default function HomePage() {
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
         >
-          <div className="w-24 h-24 rounded-[22px] bg-gradient-to-br from-[#0A84FF] to-[#5856D6] flex items-center justify-center shadow-xl">
+          <div className="w-24 h-24 rounded-[22px] bg-ios-blue flex items-center justify-center shadow-xl">
             <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
             </svg>
@@ -30,7 +30,7 @@ export default function HomePage() {
 
         {/* 标题 */}
         <motion.h1
-          className="text-5xl md:text-6xl font-bold mb-4 text-black tracking-tight"
+          className="text-5xl md:text-6xl font-bold mb-4 text-ios-label tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -39,7 +39,7 @@ export default function HomePage() {
         </motion.h1>
 
         <motion.p
-          className="text-lg md:text-xl text-[#8E8E93] mb-12 max-w-md"
+          className="text-lg md:text-xl text-ios-gray mb-12 max-w-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -76,7 +76,7 @@ export default function HomePage() {
 
       {/* 底部装饰 */}
       <motion.div
-        className="absolute bottom-8 text-[#8E8E93] text-sm"
+        className="absolute bottom-8 text-ios-gray text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}

@@ -8,6 +8,13 @@ import {
   Flame,
   Star,
   Medal,
+  Gamepad2,
+  Crosshair,
+  Crown,
+  Gem,
+  Sparkles,
+  Check,
+  X,
 } from 'lucide-react';
 import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
 
@@ -31,30 +38,30 @@ export default function ProfilePage() {
           className="p-1.5 rounded-full active:bg-black/5 transition-colors"
           whileTap={{ scale: 0.9 }}
         >
-          <ChevronLeft className="w-7 h-7 text-[#0A84FF]" strokeWidth={2.5} />
+          <ChevronLeft className="w-7 h-7 text-ios-blue" strokeWidth={2.5} />
         </motion.button>
-        <h1 className="text-[17px] font-semibold text-black ml-2">个人记录</h1>
+        <h1 className="text-[17px] font-semibold text-ios-label ml-2">个人记录</h1>
       </div>
 
       {/* 等级卡片 */}
       <div className="px-4 pt-4">
         <div className="ios-list-item p-5">
           <div className="flex items-center gap-4 mb-3">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0A84FF] to-[#5856D6] flex items-center justify-center">
+            <div className="w-16 h-16 rounded-2xl bg-ios-blue flex items-center justify-center">
               <span className="text-2xl font-bold text-white">{playerStats.level}</span>
             </div>
             <div className="flex-1">
-              <h2 className="text-xl font-bold text-black">Lv.{playerStats.level}</h2>
-              <p className="text-sm text-[#8E8E93]">
+              <h2 className="text-xl font-bold text-ios-label">Lv.{playerStats.level}</h2>
+              <p className="text-sm text-ios-gray">
                 {playerStats.experience} / {playerStats.level * 100} XP
               </p>
             </div>
           </div>
 
           {/* 经验条 */}
-          <div className="w-full h-1.5 bg-[#E5E5EA] rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-ios-gray/15 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-[#0A84FF] rounded-full"
+              className="h-full bg-ios-blue rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(playerStats.experience / (playerStats.level * 100)) * 100}%` }}
               transition={{ duration: 1, ease: 'easeOut' }}
@@ -67,40 +74,40 @@ export default function ProfilePage() {
       <div className="px-4 mt-4 grid grid-cols-2 gap-3">
         <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Target className="w-4 h-4 text-[#0A84FF]" />
-            <span className="text-[13px] text-[#8E8E93]">总场次</span>
+            <Target className="w-4 h-4 text-ios-blue" />
+            <span className="text-[13px] text-ios-gray">总场次</span>
           </div>
-          <p className="text-2xl font-bold text-black">{playerStats.totalGames}</p>
+          <p className="text-2xl font-bold text-ios-label">{playerStats.totalGames}</p>
         </div>
 
         <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-[#34C759]" />
-            <span className="text-[13px] text-[#8E8E93]">正确率</span>
+            <TrendingUp className="w-4 h-4 text-ios-green" />
+            <span className="text-[13px] text-ios-gray">正确率</span>
           </div>
-          <p className="text-2xl font-bold text-black">{accuracy}%</p>
+          <p className="text-2xl font-bold text-ios-label">{accuracy}%</p>
         </div>
 
         <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Flame className="w-4 h-4 text-[#FF9500]" />
-            <span className="text-[13px] text-[#8E8E93]">最高连胜</span>
+            <Flame className="w-4 h-4 text-ios-orange" />
+            <span className="text-[13px] text-ios-gray">最高连胜</span>
           </div>
-          <p className="text-2xl font-bold text-black">{playerStats.maxStreak}</p>
+          <p className="text-2xl font-bold text-ios-label">{playerStats.maxStreak}</p>
         </div>
 
         <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Star className="w-4 h-4 text-[#FFCC00]" />
-            <span className="text-[13px] text-[#8E8E93]">当前连胜</span>
+            <Star className="w-4 h-4 text-ios-orange" />
+            <span className="text-[13px] text-ios-gray">当前连胜</span>
           </div>
-          <p className="text-2xl font-bold text-black">{playerStats.winStreak}</p>
+          <p className="text-2xl font-bold text-ios-label">{playerStats.winStreak}</p>
         </div>
       </div>
 
       {/* 成就 */}
       <div className="px-4 mt-6">
-        <h3 className="text-[13px] uppercase text-[#8E8E93] font-medium mb-2 px-1 flex items-center gap-1.5">
+        <h3 className="text-[13px] uppercase text-ios-gray font-medium mb-2 px-1 flex items-center gap-1.5">
           <Medal className="w-3.5 h-3.5" />
           成就
         </h3>
@@ -108,15 +115,30 @@ export default function ProfilePage() {
           {achievements.map((achievement, index) => (
             <motion.div
               key={index}
-              className={`flex flex-col items-center py-2 rounded-xl ${
-                achievement.unlocked ? '' : 'opacity-30'
-              }`}
+              className="flex flex-col items-center py-2 rounded-xl"
               initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: achievement.unlocked ? 1 : 0.3, scale: 1 }}
+              animate={{ opacity: achievement.unlocked ? 1 : 0.35, scale: 1 }}
               transition={{ delay: 0.3 + index * 0.05 }}
             >
-              <div className="text-3xl mb-1">{achievement.icon}</div>
-              <p className="text-[11px] font-medium text-black">{achievement.name}</p>
+              <div
+                className={`w-10 h-10 rounded-full flex items-center justify-center mb-1.5 transition-colors ${
+                  achievement.unlocked
+                    ? achievement.bgColor
+                    : 'bg-ios-gray/10'
+                }`}
+              >
+                <achievement.icon
+                  className={`w-5 h-5 ${
+                    achievement.unlocked ? achievement.color : 'text-ios-gray'
+                  }`}
+                  strokeWidth={2}
+                />
+              </div>
+              <p className={`text-[11px] font-medium text-center ${
+                achievement.unlocked ? 'text-ios-label' : 'text-ios-gray'
+              }`}>
+                {achievement.name}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -124,12 +146,12 @@ export default function ProfilePage() {
 
       {/* 历史记录 */}
       <div className="px-4 mt-6">
-        <h3 className="text-[13px] uppercase text-[#8E8E93] font-medium mb-2 px-1">
+        <h3 className="text-[13px] uppercase text-ios-gray font-medium mb-2 px-1">
           最近记录
         </h3>
 
         {gameHistory.length === 0 ? (
-          <div className="ios-list-item p-8 text-center text-[#8E8E93]">
+          <div className="ios-list-item p-8 text-center text-ios-gray">
             <p>暂无记录</p>
             <p className="text-sm mt-1">开始游戏以记录你的战绩</p>
           </div>
@@ -139,7 +161,7 @@ export default function ProfilePage() {
               <motion.div
                 key={game.id}
                 className={`flex items-center justify-between p-3 ${
-                  index !== Math.min(gameHistory.length, 10) - 1 ? 'border-b border-[#E5E5EA]' : ''
+                  index !== Math.min(gameHistory.length, 10) - 1 ? 'border-b border-ios-separator' : ''
                 }`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -148,23 +170,27 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-3">
                   <DefaultContactAvatar size={40} />
                   <div>
-                    <p className="font-medium text-[15px] text-black">TA</p>
-                    <p className="text-[12px] text-[#8E8E93]">
+                    <p className="font-medium text-[15px] text-ios-label">TA</p>
+                    <p className="text-[12px] text-ios-gray">
                       {game.partner.isAI ? 'AI' : '真人'}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <span className="text-[15px] text-[#0A84FF] font-medium">
+                  <span className="text-[15px] text-ios-blue font-medium">
                     +{game.score}
                   </span>
                   <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs ${
-                      game.isCorrect ? 'bg-[#34C759]' : 'bg-[#FF3B30]'
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-white ${
+                      game.isCorrect ? 'bg-ios-green' : 'bg-ios-red'
                     }`}
                   >
-                    {game.isCorrect ? '✓' : '✗'}
+                    {game.isCorrect ? (
+                      <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                    ) : (
+                      <X className="w-3.5 h-3.5" strokeWidth={3} />
+                    )}
                   </div>
                 </div>
               </motion.div>
@@ -189,11 +215,11 @@ export default function ProfilePage() {
 
 function getAchievements(stats: any) {
   return [
-    { icon: '🎮', name: '新手', unlocked: stats.totalGames >= 1 },
-    { icon: '🎯', name: '神射手', unlocked: stats.correctGuesses >= 10 },
-    { icon: '🔥', name: '连胜王', unlocked: stats.maxStreak >= 5 },
-    { icon: '👑', name: '大师', unlocked: stats.level >= 10 },
-    { icon: '💎', name: '钻石', unlocked: stats.totalGames >= 50 },
-    { icon: '🌟', name: '传奇', unlocked: stats.maxStreak >= 10 },
+    { icon: Gamepad2, name: '新手', color: 'text-ios-blue', bgColor: 'bg-ios-blue/15', unlocked: stats.totalGames >= 1 },
+    { icon: Crosshair, name: '神射手', color: 'text-ios-red', bgColor: 'bg-ios-red/15', unlocked: stats.correctGuesses >= 10 },
+    { icon: Flame, name: '连胜王', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.maxStreak >= 5 },
+    { icon: Crown, name: '大师', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.level >= 10 },
+    { icon: Gem, name: '钻石', color: 'text-ios-blue', bgColor: 'bg-ios-blue/15', unlocked: stats.totalGames >= 50 },
+    { icon: Sparkles, name: '传奇', color: 'text-ios-orange', bgColor: 'bg-ios-orange/15', unlocked: stats.maxStreak >= 10 },
   ];
 }

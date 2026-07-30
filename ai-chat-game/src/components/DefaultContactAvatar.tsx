@@ -1,5 +1,5 @@
 // iOS 通讯录默认联系人头像
-// 蓝紫渐变 + 白色人物轮廓，参考 iPhone 通讯录默认头像
+// 蓝色渐变圆形 + 白色人物轮廓，参考 iPhone 通讯录默认头像
 export function DefaultContactAvatar({ size = 44 }: { size?: number }) {
   return (
     <div
@@ -8,7 +8,7 @@ export function DefaultContactAvatar({ size = 44 }: { size?: number }) {
         width: size,
         height: size,
         background:
-          'linear-gradient(135deg, #4A8DFF 0%, #6B6BFF 50%, #8B5CF6 100%)',
+          'linear-gradient(135deg, #5AC8FA 0%, #007AFF 50%, #5856D6 100%)',
       }}
     >
       <svg

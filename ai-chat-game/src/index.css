@@ -3,74 +3,132 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Apple iOS 系统色 */
+    --ios-blue: #007AFF;
+    --ios-blue-dark: #0051D5;
+    --ios-green: #34C759;
+    --ios-red: #FF3B30;
+    --ios-orange: #FF9500;
+    --ios-gray: #8E8E93;
+    --ios-label: #1D1D1F;
+    --ios-secondary: #3C3C43;
+    --ios-bg: #F2F2F7;
+    --ios-card: #FFFFFF;
+    --ios-separator: rgba(60, 60, 67, 0.12);
+    --ios-bubble-sent: #007AFF;
+    --ios-bubble-received: #E9E9EB;
+  }
+
   body {
-    @apply min-h-screen font-sans antialiased text-black;
-    background: #FFFFFF;
+    @apply min-h-screen font-sans antialiased;
+    color: var(--ios-label);
+    background: var(--ios-bg);
     -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'PingFang SC', 'Helvetica Neue', sans-serif;
   }
 }
 
 @layer components {
   /* iOS 浅色页面 */
   .page-ios {
-    @apply min-h-screen text-black;
-    background: #F2F2F7;
+    @apply min-h-screen;
+    background: var(--ios-bg);
+    color: var(--ios-label);
   }
 
-  /* iOS 顶部导航栏（毛玻璃） */
+  /* iOS 顶部毛玻璃导航栏 */
   .ios-nav-bar {
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
-    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 0.5px solid var(--ios-separator);
   }
 
-  /* iOS 列表卡片 */
+  /* iOS 列表卡片（iOS 11+风格） */
   .ios-list-item {
-    background: #FFFFFF;
+    background: var(--ios-card);
     border-radius: 14px;
-    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.04);
   }
 
-  /* iOS 主操作按钮（蓝色实心） */
+  /* iOS 主按钮（蓝色实心） */
   .ios-button-primary {
     @apply font-semibold text-white transition-all;
-    background: #0A84FF;
+    background: var(--ios-blue);
     border-radius: 14px;
   }
   .ios-button-primary:active {
-    background: #0066CC;
+    background: var(--ios-blue-dark);
   }
   .ios-button-primary:disabled {
-    @apply cursor-not-allowed;
-    background: #0A84FF;
+    opacity: 0.4;
   }
 
-  /* iOS 次要按钮（灰色） */
+  /* iOS 次要按钮（灰色填充） */
   .ios-button-secondary {
-    @apply font-medium text-[#0A84FF] transition-all;
+    @apply font-medium transition-all;
+    color: var(--ios-blue);
     background: rgba(120, 120, 128, 0.12);
     border-radius: 14px;
   }
   .ios-button-secondary:active {
     background: rgba(120, 120, 128, 0.18);
   }
+
+  /* iMessage 真实气泡 - 发送 */
+  .bubble-sent {
+    position: relative;
+    background: var(--ios-bubble-sent);
+    color: white;
+    border-radius: 18px 18px 4px 18px;
+    padding: 8px 14px;
+  }
+  .bubble-sent::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--ios-bubble-sent);
+    border-bottom-left-radius: 12px 12px;
+    clip-path: path('M 0 0 L 12 0 L 12 12 Q 6 6 0 0 Z');
+  }
+
+  /* iMessage 真实气泡 - 接收 */
+  .bubble-received {
+    position: relative;
+    background: var(--ios-bubble-received);
+    color: var(--ios-label);
+    border-radius: 18px 18px 18px 4px;
+    padding: 8px 14px;
+  }
+  .bubble-received::after {
+    content: '';
+    position: absolute;
+    left: -6px;
+    bottom: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--ios-bubble-received);
+    border-bottom-right-radius: 12px 12px;
+    clip-path: path('M 12 0 L 0 0 L 0 12 Q 6 6 12 0 Z');
+  }
 }
 
 @layer utilities {
-  .text-ios-blue { color: #0A84FF; }
-  .text-ios-green { color: #34C759; }
-  .text-ios-red { color: #FF3B30; }
-  .text-ios-orange { color: #FF9500; }
-  .text-ios-yellow { color: #FFCC00; }
-  .text-ios-gray { color: #8E8E93; }
-  .text-ios-label { color: #000000; }
-  .text-ios-secondary { color: #3C3C43; }
-  .bg-ios-bg { background-color: #F2F2F7; }
-  .bg-ios-card { background-color: #FFFFFF; }
+  .text-ios-blue { color: var(--ios-blue); }
+  .text-ios-green { color: var(--ios-green); }
+  .text-ios-red { color: var(--ios-red); }
+  .text-ios-orange { color: var(--ios-orange); }
+  .text-ios-gray { color: var(--ios-gray); }
+  .text-ios-label { color: var(--ios-label); }
+  .text-ios-secondary { color: var(--ios-secondary); }
+  .bg-ios-bg { background-color: var(--ios-bg); }
+  .bg-ios-card { background-color: var(--ios-card); }
 }
 
-/* iOS-style scrollbar */
+/* 隐藏滚动条 */
 ::-webkit-scrollbar {
   width: 0;
   display: none;

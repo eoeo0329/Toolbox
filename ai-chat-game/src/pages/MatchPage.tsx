@@ -25,7 +25,7 @@ export default function MatchPage() {
         {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-64 h-64 rounded-full border border-[#0A84FF]/20"
+            className="absolute w-64 h-64 rounded-full border border-ios-blue/20"
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{
               scale: [0.5, 2, 0.5],
@@ -47,7 +47,7 @@ export default function MatchPage() {
         animate={{ rotate: 360 }}
         transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
       >
-        <Loader2 className="w-16 h-16 text-[#0A84FF]" />
+        <Loader2 className="w-16 h-16 text-ios-blue" />
       </motion.div>
 
       {/* 匹配文字 */}
@@ -57,13 +57,13 @@ export default function MatchPage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 className="text-2xl font-semibold mb-2 text-black">正在匹配聊天对象</h2>
-        <p className="text-[#8E8E93]">请稍候...</p>
+        <h2 className="text-2xl font-semibold mb-2 text-ios-label">正在匹配聊天对象</h2>
+        <p className="text-ios-gray">请稍候...</p>
       </motion.div>
 
       {/* 动态提示 */}
       <motion.div
-        className="absolute bottom-12 text-[#8E8E93] text-sm"
+        className="absolute bottom-12 text-ios-gray text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
