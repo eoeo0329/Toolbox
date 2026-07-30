@@ -27,7 +27,9 @@ export interface GameSession {
   startTime: Date;
   endTime?: Date;
   playerGuess?: 'human' | 'ai';
+  opponentGuess?: 'human' | 'ai';
   isCorrect?: boolean;
+  opponentCorrect?: boolean;
   score: number;
 }
 

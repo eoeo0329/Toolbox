@@ -12,6 +12,9 @@ import {
   AlertCircle,
   X,
   Check,
+  User,
+  Bot,
+  Eye,
 } from 'lucide-react';
 
 export default function ResultPage() {
@@ -70,6 +73,8 @@ export default function ResultPage() {
   const score = currentSession?.score || 0;
   const partner = currentSession?.partner;
   const isAI = partner?.isAI || false;
+  const opponentGuess = currentSession?.opponentGuess;
+  const opponentCorrect = currentSession?.opponentCorrect || false;
 
   const analysis = generateAnalysis(currentSession);
 
@@ -195,13 +200,64 @@ export default function ResultPage() {
         </div>
       </motion.div>
 
+      {/* 游戏胜负 - 双向揭晓 */}
+      <motion.div
+        className="mx-4 mb-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.45 }}
+      >
+        <h3 className="text-[13px] uppercase text-ios-gray font-medium tracking-wide px-1 mb-2">
+          游戏胜负
+        </h3>
+        <div className="ios-list-item p-5">
+          {/* 你的判断 */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isCorrect ? 'bg-ios-green/15' : 'bg-ios-red/15'}`}>
+              {currentSession?.playerGuess === 'human' ? (
+                <User className={`w-5 h-5 ${isCorrect ? 'text-ios-green' : 'text-ios-red'}`} />
+              ) : (
+                <Bot className={`w-5 h-5 ${isCorrect ? 'text-ios-green' : 'text-ios-red'}`} />
+              )}
+            </div>
+            <div className="flex-1">
+              <p className="text-[13px] text-ios-gray">你的判断</p>
+              <p className="text-[15px] font-semibold text-ios-label">
+                对方是 {currentSession?.playerGuess === 'human' ? '真人' : 'AI'}
+                <span className={`ml-2 text-[13px] font-medium ${isCorrect ? 'text-ios-green' : 'text-ios-red'}`}>
+                  {isCorrect ? '猜对了' : '猜错了'}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <div className="h-px bg-ios-separator my-3" />
+
+          {/* 对方的判断 */}
+          <div className="flex items-center gap-3">
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${opponentCorrect ? 'bg-ios-green/15' : 'bg-ios-red/15'}`}>
+              <Eye className={`w-5 h-5 ${opponentCorrect ? 'text-ios-green' : 'text-ios-red'}`} />
+            </div>
+            <div className="flex-1">
+              <p className="text-[13px] text-ios-gray">对方的判断</p>
+              <p className="text-[15px] font-semibold text-ios-label">
+                你是 {opponentGuess === 'human' ? '真人' : 'AI'}
+                <span className={`ml-2 text-[13px] font-medium ${opponentCorrect ? 'text-ios-green' : 'text-ios-red'}`}>
+                  {opponentCorrect ? '对方猜对了' : '对方猜错了'}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
       {/* 连胜和经验 */}
       {isCorrect && (
         <motion.div
           className="mx-4 mb-4"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.55 }}
         >
           <div className="ios-list-item p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -235,7 +291,7 @@ export default function ResultPage() {
         className="fixed bottom-8 left-0 right-0 px-6 flex flex-col gap-3 max-w-md mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.6 }}
+        transition={{ delay: 0.65 }}
       >
         <motion.button
           onClick={() => navigate('/match')}
@@ -247,11 +303,12 @@ export default function ResultPage() {
         </motion.button>
 
         <motion.button
-          onClick={() => navigate('/profile')}
+          onClick={() => navigate('/')}
           className="w-full ios-button-secondary py-3.5 text-[15px] flex items-center justify-center gap-2"
           whileTap={{ scale: 0.98 }}
         >
-          查看战绩
+          <Home className="w-4 h-4" />
+          返回首页
         </motion.button>
       </motion.div>
     </div>

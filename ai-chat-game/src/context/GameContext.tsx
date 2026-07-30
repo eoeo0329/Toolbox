@@ -147,10 +147,16 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       const isCorrect = action.payload === (state.currentSession.partner.isAI ? 'ai' : 'human');
       const score = calculateScore(state.currentSession, isCorrect);
 
+      // 对方认为你是 AI 还是真人（模拟）
+      const opponentGuess: 'human' | 'ai' = Math.random() > 0.5 ? 'human' : 'ai';
+      const opponentCorrect = opponentGuess === 'ai';
+
       const updatedSession: GameSession = {
         ...state.currentSession,
         playerGuess: action.payload,
+        opponentGuess,
         isCorrect,
+        opponentCorrect,
         score,
         endTime: new Date(),
       };

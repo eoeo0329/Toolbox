@@ -72,6 +72,7 @@ export default function ChatPage() {
 
   const now = new Date();
   const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+  const lastPlayerId = getLastPlayerMessageId(currentSession.messages);
 
   return (
     <div className="h-screen flex flex-col bg-ios-bg text-ios-label overflow-hidden">
@@ -164,11 +165,11 @@ export default function ChatPage() {
 
         {/* 消息列表 */}
         <AnimatePresence initial={false}>
-          {currentSession.messages.map((message, index) => (
+          {currentSession.messages.map((message) => (
             <MessageBubble
               key={message.id}
               message={message}
-              isLast={index === currentSession.messages.length - 1}
+              isLastPlayerMessage={message.id === lastPlayerId}
             />
           ))}
         </AnimatePresence>
@@ -268,8 +269,22 @@ export default function ChatPage() {
   );
 }
 
+// 找到最后一条发送的消息ID，用于显示已读状态
+function getLastPlayerMessageId(messages: Message[]) {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    if (messages[i].sender === 'player') return messages[i].id;
+  }
+  return null;
+}
+
 // ===== iMessage 真实气泡组件 =====
-function MessageBubble({ message, isLast }: { message: Message; isLast: boolean }) {
+function MessageBubble({
+  message,
+  isLastPlayerMessage,
+}: {
+  message: Message;
+  isLastPlayerMessage: boolean;
+}) {
   const isPlayer = message.sender === 'player';
   const timeStr = message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
 
@@ -287,16 +302,15 @@ function MessageBubble({ message, isLast }: { message: Message; isLast: boolean 
           </span>
         </div>
 
-        {/* 已读状态 - 只在最后一条已读消息显示 */}
-        {isPlayer && isLast && message.status === 'read' && (
+        {/* 已读状态 - 只在最后一条发送消息显示 */}
+        {isPlayer && isLastPlayerMessage && message.status === 'read' && (
           <motion.div
             className="flex items-center justify-end gap-1 mt-0.5 px-1"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <span className="text-[11px] text-ios-gray">{timeStr}</span>
-            <span className="text-[11px] text-ios-gray">已读</span>
+            <span className="text-[11px] text-ios-gray">{timeStr} 已读</span>
           </motion.div>
         )}
       </div>

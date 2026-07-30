@@ -17,7 +17,7 @@
     --ios-card: #FFFFFF;
     --ios-separator: rgba(60, 60, 67, 0.12);
     --ios-bubble-sent: #007AFF;
-    --ios-bubble-received: #E9E9EB;
+    --ios-bubble-received: #E5E5EA;
   }
 
   body {
@@ -75,7 +75,7 @@
     background: rgba(120, 120, 128, 0.18);
   }
 
-  /* iMessage 真实气泡 - 发送 */
+  /* iMessage 真实气泡 - 发送（蓝色，右侧尖角） */
   .bubble-sent {
     position: relative;
     background: var(--ios-bubble-sent);
@@ -88,14 +88,13 @@
     position: absolute;
     right: -6px;
     bottom: 0;
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: var(--ios-bubble-sent);
-    border-bottom-left-radius: 12px 12px;
-    clip-path: path('M 0 0 L 12 0 L 12 12 Q 6 6 0 0 Z');
+    border-bottom-left-radius: 100%;
   }
 
-  /* iMessage 真实气泡 - 接收 */
+  /* iMessage 真实气泡 - 接收（灰色，左侧尖角） */
   .bubble-received {
     position: relative;
     background: var(--ios-bubble-received);
@@ -108,11 +107,10 @@
     position: absolute;
     left: -6px;
     bottom: 0;
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     background: var(--ios-bubble-received);
-    border-bottom-right-radius: 12px 12px;
-    clip-path: path('M 12 0 L 0 0 L 0 12 Q 6 6 12 0 Z');
+    border-bottom-right-radius: 100%;
   }
 }
 
