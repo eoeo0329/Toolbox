@@ -8,7 +8,8 @@ import {
   ChevronRight,
   Star,
   Zap,
-  Calendar
+  Calendar,
+  Settings
 } from 'lucide-react';
 import { GameCard, type GameItem } from '../components/GameCard';
 
@@ -82,13 +83,22 @@ export default function HomePage() {
           <h1 className="text-[34px] font-bold tracking-tight text-ios-label">
             AI挑战中心
           </h1>
-          <motion.button
-            className="w-10 h-10 rounded-full bg-black/[0.05] flex items-center justify-center"
-            whileTap={{ scale: 0.9 }}
-            onClick={() => navigate('/profile')}
-          >
-            <User className="w-5 h-5 text-ios-blue" />
-          </motion.button>
+          <div className="flex items-center gap-2">
+            <motion.button
+              className="w-10 h-10 rounded-full bg-black/[0.05] flex items-center justify-center"
+              whileTap={{ scale: 0.9 }}
+              onClick={() => navigate('/settings')}
+            >
+              <Settings className="w-5 h-5 text-ios-blue" />
+            </motion.button>
+            <motion.button
+              className="w-10 h-10 rounded-full bg-black/[0.05] flex items-center justify-center"
+              whileTap={{ scale: 0.9 }}
+              onClick={() => navigate('/profile')}
+            >
+              <User className="w-5 h-5 text-ios-blue" />
+            </motion.button>
+          </div>
         </div>
       </motion.header>
 

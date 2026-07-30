@@ -6,6 +6,7 @@ import ChatPage from './pages/ChatPage';
 import JudgePage from './pages/JudgePage';
 import ResultPage from './pages/ResultPage';
 import ProfilePage from './pages/ProfilePage';
+import SettingsPage from './pages/SettingsPage';
 import './index.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/judge" element={<JudgePage />} />
           <Route path="/result" element={<ResultPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Routes>
       </Router>
     </GameProvider>
