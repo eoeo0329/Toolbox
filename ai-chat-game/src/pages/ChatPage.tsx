@@ -10,6 +10,7 @@ import {
   Lock,
 } from 'lucide-react';
 import type { Message } from '../types';
+import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
 
 export default function ChatPage() {
   const navigate = useNavigate();
@@ -73,15 +74,11 @@ export default function ChatPage() {
     <div className="h-screen flex flex-col bg-[#F2F2F7] text-black">
       {/* ===== 顶部导航栏 ===== */}
       <div className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shrink-0 z-10">
-        {/* 居中：大头像 + 名字（固定显示 "TA"） */}
+        {/* 居中：iOS 联系人默认头像 + 名字（固定显示 "TA"） */}
         <div className="flex justify-center pt-2 pb-1.5">
           <div className="flex flex-col items-center">
-            <img
-              src={partner.avatar}
-              alt={partner.name}
-              className="w-10 h-10 rounded-full object-cover"
-            />
-            <span className="text-[13px] font-semibold text-black mt-0.5">TA</span>
+            <DefaultContactAvatar size={44} />
+            <span className="text-[13px] font-semibold text-black mt-1">TA</span>
           </div>
         </div>
       </div>

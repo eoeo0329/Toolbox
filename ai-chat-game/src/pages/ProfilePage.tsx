@@ -9,6 +9,7 @@ import {
   Star,
   Medal,
 } from 'lucide-react';
+import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -145,11 +146,7 @@ export default function ProfilePage() {
                 transition={{ delay: 0.4 + index * 0.05 }}
               >
                 <div className="flex items-center gap-3">
-                  <img
-                    src={game.partner.avatar}
-                    alt=""
-                    className="w-10 h-10 rounded-full"
-                  />
+                  <DefaultContactAvatar size={40} />
                   <div>
                     <p className="font-medium text-[15px] text-black">TA</p>
                     <p className="text-[12px] text-[#8E8E93]">

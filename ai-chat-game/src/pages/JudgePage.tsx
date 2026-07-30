@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 import { User, Bot, Sparkles } from 'lucide-react';
+import { DefaultContactAvatar } from '../components/DefaultContactAvatar';
 
 export default function JudgePage() {
   const navigate = useNavigate();
@@ -41,11 +42,7 @@ export default function JudgePage() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1 }}
       >
-        <img
-          src={currentSession.partner.avatar}
-          alt={currentSession.partner.name}
-          className="w-16 h-16 rounded-full shadow-md"
-        />
+        <DefaultContactAvatar size={64} />
         <div>
           <h2 className="text-xl font-semibold text-black">TA</h2>
           <p className="text-sm text-[#8E8E93]">
