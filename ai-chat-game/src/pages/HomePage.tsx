@@ -1,88 +1,176 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Play, User } from 'lucide-react';
+import { 
+  Eye, 
+  MessageCircle, 
+  User, 
+  Sparkles, 
+  ChevronRight,
+  Star,
+  Zap,
+  Calendar
+} from 'lucide-react';
+import { GameCard, type GameItem } from '../components/GameCard';
+
+const games: GameItem[] = [
+  {
+    id: 'detect-ai',
+    name: '识破AI',
+    description: '通过聊天判断对方是真人还是AI，挑战你的洞察力',
+    icon: Eye,
+    gradient: 'linear-gradient(135deg, #007AFF 0%, #0051D5 100%)',
+    rating: 4.8,
+    difficulty: '中等',
+    isAvailable: true,
+    route: '/match',
+  },
+  {
+    id: 'ai-chat',
+    name: 'AI聊天',
+    description: '与不同性格的AI进行深度对话，体验智能情感交互',
+    icon: MessageCircle,
+    gradient: 'linear-gradient(135deg, #5856D6 0%, #4845D4 100%)',
+    rating: 4.5,
+    difficulty: '简单',
+    isAvailable: false,
+  },
+  {
+    id: 'identity-quiz',
+    name: '身份猜谜',
+    description: '通过AI的回答猜出它模仿的是谁，经典的图灵测试游戏',
+    icon: User,
+    gradient: 'linear-gradient(135deg, #FF9500 0%, #FB5C00 100%)',
+    rating: 4.6,
+    difficulty: '困难',
+    isAvailable: false,
+  },
+  {
+    id: 'zodiac-love',
+    name: '星座恋爱挑战',
+    description: '匹配你的星座AI伴侣，测试你们的契合度',
+    icon: Sparkles,
+    gradient: 'linear-gradient(135deg, #FF2D92 0%, #FF375F 100%)',
+    rating: 4.4,
+    difficulty: '中等',
+    isAvailable: false,
+  },
+];
 
 export default function HomePage() {
   const navigate = useNavigate();
 
+  const handlePlay = (game: GameItem) => {
+    if (!game.isAvailable) {
+      alert('该游戏正在开发中，敬请期待！');
+      return;
+    }
+    if (game.route) {
+      navigate(game.route);
+    }
+  };
+
   return (
-    <div className="page-ios min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* 主内容 */}
-      <motion.div
-        className="relative z-10 text-center flex flex-col items-center"
-        initial={{ opacity: 0, y: 20 }}
+    <div className="min-h-screen w-full bg-ios-bg flex flex-col">
+      {/* 顶部导航栏 (iOS Large Title Style) */}
+      <motion.header 
+        className="sticky top-0 z-50 bg-ios-bg/85 backdrop-blur-xl border-b border-black/[0.06] pt-safe"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.4 }}
       >
-        {/* Logo */}
+        <div className="px-5 pb-2 flex items-center justify-between">
+          <h1 className="text-[34px] font-bold tracking-tight text-ios-label">
+            AI挑战中心
+          </h1>
+          <motion.button
+            className="w-10 h-10 rounded-full bg-black/[0.05] flex items-center justify-center"
+            whileTap={{ scale: 0.9 }}
+            onClick={() => navigate('/profile')}
+          >
+            <User className="w-5 h-5 text-ios-blue" />
+          </motion.button>
+        </div>
+      </motion.header>
+
+      {/* 主要内容 */}
+      <main className="flex-1 px-5 pb-32 pt-4 overflow-y-auto">
+        {/* 精选 Banner */}
         <motion.div
-          className="mb-8"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
+          className="relative rounded-2xl overflow-hidden mb-6 shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #007AFF 0%, #5856D6 100%)',
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <div className="w-24 h-24 rounded-[22px] bg-ios-blue flex items-center justify-center shadow-xl">
-            <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-            </svg>
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-white blur-2xl" />
+            <div className="absolute right-20 bottom-0 w-24 h-24 rounded-full bg-white blur-xl" />
+          </div>
+          <div className="relative p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <Zap className="w-4 h-4 text-white fill-white" />
+              <span className="text-[11px] font-semibold text-white/90 uppercase tracking-wider">
+                热门推荐
+              </span>
+            </div>
+            <h2 className="text-[22px] font-bold text-white mb-1">
+              识破AI · 图灵测试
+            </h2>
+            <p className="text-[13px] text-white/85 mb-4 leading-relaxed">
+              你能分清屏幕背后的是真人还是AI吗？加入挑战，看看你的洞察能力！
+            </p>
+            <motion.button
+              className="inline-flex items-center gap-1 bg-white text-ios-blue font-semibold text-[14px] px-4 py-2 rounded-full"
+              whileTap={{ scale: 0.95 }}
+              onClick={() => navigate('/match')}
+            >
+              立即体验
+              <ChevronRight className="w-4 h-4" />
+            </motion.button>
           </div>
         </motion.div>
 
-        {/* 标题 */}
-        <motion.h1
-          className="text-5xl md:text-6xl font-bold mb-4 text-ios-label tracking-tight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          你能识破AI吗？
-        </motion.h1>
-
-        <motion.p
-          className="text-lg md:text-xl text-ios-gray mb-12 max-w-md"
+        {/* 游戏分类标题 */}
+        <motion.div 
+          className="mb-3 flex items-center justify-between"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.2 }}
         >
-          与神秘陌生人聊天，判断对方是真人还是AI
-        </motion.p>
+          <h2 className="text-[22px] font-bold text-ios-label">游戏大厅</h2>
+          <span className="text-[13px] text-ios-gray">{games.length} 款游戏</span>
+        </motion.div>
 
-        {/* 开始按钮 */}
-        <motion.button
-          onClick={() => navigate('/match')}
-          className="ios-button-primary px-12 py-4 text-lg font-semibold mb-6 shadow-sm"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          whileTap={{ scale: 0.97 }}
-        >
-          <Play className="w-5 h-5 mr-2 inline-block" fill="currentColor" />
-          开始挑战
-        </motion.button>
+        {/* 游戏列表 */}
+        <div className="space-y-3">
+          {games.map((game, index) => (
+            <motion.div
+              key={game.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 * index + 0.2 }}
+            >
+              <GameCard game={game} onPlay={handlePlay} />
+            </motion.div>
+          ))}
+        </div>
 
-        {/* 个人按钮 */}
-        <motion.button
-          onClick={() => navigate('/profile')}
-          className="ios-button-secondary flex items-center gap-2"
+        {/* 底部提示 */}
+        <motion.div 
+          className="mt-8 text-center"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          whileTap={{ scale: 0.97 }}
         >
-          <User className="w-4 h-4" />
-          个人记录
-        </motion.button>
-      </motion.div>
-
-      {/* 底部装饰 */}
-      <motion.div
-        className="absolute bottom-8 text-ios-gray text-sm"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.7 }}
-      >
-        AI图灵测试社交实验
-      </motion.div>
+          <p className="text-[13px] text-ios-gray mb-2">更多游戏即将上线</p>
+          <div className="flex items-center justify-center gap-1 text-ios-gray">
+            <Calendar className="w-4 h-4" />
+            <span className="text-[12px]">敬请期待</span>
+          </div>
+        </motion.div>
+      </main>
     </div>
   );
 }
