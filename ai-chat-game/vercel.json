@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd /workspace/ai-chat-game && npm install --no-audit --no-fund && npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "installCommand": "cd /workspace/ai-chat-game && npm install --no-audit --no-fund",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
