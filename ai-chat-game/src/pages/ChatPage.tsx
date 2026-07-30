@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 import { Send, Check, CheckCheck, ChevronLeft } from 'lucide-react';
-import { Message } from '../types';
+import type { Message } from '../types';
 
 export default function ChatPage() {
   const navigate = useNavigate();

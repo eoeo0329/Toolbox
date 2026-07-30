@@ -1,4 +1,4 @@
-import { AIPersonality } from '../types';
+import type { AIPersonality } from '../types';
 
 const aiResponses: Record<AIPersonality, string[]> = {
   cold: [

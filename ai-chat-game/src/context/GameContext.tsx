@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
-import { GameSession, Message, ChatPartner, PlayerStats, AIPersonality } from '../types';
+import type { GameSession, Message, ChatPartner, PlayerStats, AIPersonality } from '../types';
 import { getContextualResponse, getResponseDelay, generateAIName } from '../utils/aiResponses';
 
 interface GameState {
