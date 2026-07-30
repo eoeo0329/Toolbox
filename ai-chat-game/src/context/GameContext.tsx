@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import type { GameSession, Message, ChatPartner, PlayerStats, AIPersonality } from '../types';
 import { getContextualResponse, getResponseDelay, generateAIName } from '../utils/aiResponses';
+import { chatWithAI } from '../utils/api';
 
 interface GameState {
   currentSession: GameSession | null;
@@ -296,20 +297,36 @@ export function GameProvider({ children }: { children: ReactNode }) {
 
     // AI回复
     if (state.currentSession.partner.isAI) {
-      const aiResponse = getContextualResponse(personality, text);
+      // 构建对话历史（已发送的 + 已接收的）
+      const history = state.currentSession.messages.map(msg => ({
+        role: (msg.sender === 'player' ? 'user' : 'assistant') as 'user' | 'assistant',
+        content: msg.text,
+      }));
 
-      setTimeout(() => {
-        dispatch({ type: 'SET_TYPING', payload: false });
-
-        const aiMessage: Message = {
-          id: Date.now().toString(),
-          text: aiResponse,
-          sender: 'opponent',
-          timestamp: new Date(),
-        };
-
-        dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
-      }, responseDelay);
+      // 调用后端 /api/ai/chat，失败时降级到本地模拟
+      chatWithAI(text, personality, history)
+        .then((result) => {
+          dispatch({ type: 'SET_TYPING', payload: false });
+          const aiMessage: Message = {
+            id: Date.now().toString(),
+            text: result.reply,
+            sender: 'opponent',
+            timestamp: new Date(),
+          };
+          dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
+        })
+        .catch((err) => {
+          console.warn('[AI] 后端调用失败，降级到本地回复:', err.message);
+          const fallback = getContextualResponse(personality, text);
+          dispatch({ type: 'SET_TYPING', payload: false });
+          const aiMessage: Message = {
+            id: Date.now().toString(),
+            text: fallback,
+            sender: 'opponent',
+            timestamp: new Date(),
+          };
+          dispatch({ type: 'RECEIVE_MESSAGE', payload: aiMessage });
+        });
     } else {
       // 真人回复（模拟）
       const humanDelay = 3000 + Math.random() * 5000;
