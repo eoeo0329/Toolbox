@@ -75,42 +75,22 @@
     background: rgba(120, 120, 128, 0.18);
   }
 
-  /* iMessage 真实气泡 - 发送（蓝色，右侧尖角） */
+  /* iMessage 气泡 - 发送（蓝色，无尖角） */
   .bubble-sent {
     position: relative;
     background: var(--ios-bubble-sent);
     color: white;
-    border-radius: 18px 18px 4px 18px;
+    border-radius: 20px;
     padding: 8px 14px;
   }
-  .bubble-sent::after {
-    content: '';
-    position: absolute;
-    right: -6px;
-    bottom: 0;
-    width: 14px;
-    height: 14px;
-    background: var(--ios-bubble-sent);
-    border-bottom-left-radius: 100%;
-  }
 
-  /* iMessage 真实气泡 - 接收（灰色，左侧尖角） */
+  /* iMessage 气泡 - 接收（灰色，无尖角） */
   .bubble-received {
     position: relative;
     background: var(--ios-bubble-received);
     color: var(--ios-label);
-    border-radius: 18px 18px 18px 4px;
+    border-radius: 20px;
     padding: 8px 14px;
-  }
-  .bubble-received::after {
-    content: '';
-    position: absolute;
-    left: -6px;
-    bottom: 0;
-    width: 14px;
-    height: 14px;
-    background: var(--ios-bubble-received);
-    border-bottom-right-radius: 100%;
   }
 }
 
