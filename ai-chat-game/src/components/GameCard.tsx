@@ -1,11 +1,13 @@
 import { motion } from 'framer-motion';
-import { LucideIcon, Play, Star } from 'lucide-react';
+import { ComponentType } from 'react';
+import { Play, Star } from 'lucide-react';
+import type { LucideProps } from 'lucide-react';
 
 export interface GameItem {
   id: string;
   name: string;
   description: string;
-  icon: LucideIcon;
+  icon: ComponentType<LucideProps>;
   gradient: string;
   rating: number;
   difficulty: string;
