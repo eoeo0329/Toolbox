@@ -2,14 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useGame } from '../context/GameContext';
 import {
-  Trophy,
-  Target,
-  Clock,
-  Flame,
   ChevronLeft,
-  Medal,
+  Target,
   TrendingUp,
-  Star
+  Flame,
+  Star,
+  Medal,
 } from 'lucide-react';
 
 export default function ProfilePage() {
@@ -24,154 +22,124 @@ export default function ProfilePage() {
   const achievements = getAchievements(playerStats);
 
   return (
-    <div className="page-dark min-h-screen pb-24">
+    <div className="page-ios min-h-screen pb-24">
       {/* 顶部栏 */}
-      <div className="glass-card rounded-none border-t-0 border-x-0 px-4 py-4 flex items-center gap-3 sticky top-0 z-10">
+      <div className="ios-nav-bar sticky top-0 z-10 flex items-center gap-2 px-2 py-2">
         <motion.button
           onClick={() => navigate('/')}
-          className="p-2 rounded-full hover:bg-white/10 transition-colors"
-          whileHover={{ scale: 1.1 }}
+          className="p-1.5 rounded-full active:bg-black/5 transition-colors"
           whileTap={{ scale: 0.9 }}
         >
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-7 h-7 text-[#0A84FF]" strokeWidth={2.5} />
         </motion.button>
-        <h1 className="text-xl font-semibold">个人记录</h1>
+        <h1 className="text-[17px] font-semibold text-black ml-2">个人记录</h1>
       </div>
 
       {/* 等级卡片 */}
-      <motion.div
-        className="p-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div className="glass-card p-6">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <motion.div
-                className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center"
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              >
-                <span className="text-2xl font-bold">{playerStats.level}</span>
-              </motion.div>
-              <div>
-                <h2 className="text-xl font-bold">Lv.{playerStats.level}</h2>
-                <p className="text-sm text-white/60">
-                  {playerStats.experience} / {playerStats.level * 100} XP
-                </p>
-              </div>
+      <div className="px-4 pt-4">
+        <div className="ios-list-item p-5">
+          <div className="flex items-center gap-4 mb-3">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#0A84FF] to-[#5856D6] flex items-center justify-center">
+              <span className="text-2xl font-bold text-white">{playerStats.level}</span>
+            </div>
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-black">Lv.{playerStats.level}</h2>
+              <p className="text-sm text-[#8E8E93]">
+                {playerStats.experience} / {playerStats.level * 100} XP
+              </p>
             </div>
           </div>
 
           {/* 经验条 */}
-          <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-[#E5E5EA] rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
+              className="h-full bg-[#0A84FF] rounded-full"
               initial={{ width: 0 }}
               animate={{ width: `${(playerStats.experience / (playerStats.level * 100)) * 100}%` }}
-              transition={{ duration: 1, ease: "easeOut" }}
+              transition={{ duration: 1, ease: 'easeOut' }}
             />
           </div>
         </div>
-      </motion.div>
+      </div>
 
       {/* 统计数据 */}
-      <motion.div
-        className="px-6 grid grid-cols-2 gap-4"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-      >
-        {/* 总场次 */}
-        <div className="glass-card p-4">
+      <div className="px-4 mt-4 grid grid-cols-2 gap-3">
+        <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Target className="w-4 h-4 text-blue-400" />
-            <span className="text-sm text-white/60">总场次</span>
+            <Target className="w-4 h-4 text-[#0A84FF]" />
+            <span className="text-[13px] text-[#8E8E93]">总场次</span>
           </div>
-          <p className="text-2xl font-bold">{playerStats.totalGames}</p>
+          <p className="text-2xl font-bold text-black">{playerStats.totalGames}</p>
         </div>
 
-        {/* 正确率 */}
-        <div className="glass-card p-4">
+        <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-white/60">正确率</span>
+            <TrendingUp className="w-4 h-4 text-[#34C759]" />
+            <span className="text-[13px] text-[#8E8E93]">正确率</span>
           </div>
-          <p className="text-2xl font-bold">{accuracy}%</p>
+          <p className="text-2xl font-bold text-black">{accuracy}%</p>
         </div>
 
-        {/* 连胜记录 */}
-        <div className="glass-card p-4">
+        <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Flame className="w-4 h-4 text-orange-400" />
-            <span className="text-sm text-white/60">连胜记录</span>
+            <Flame className="w-4 h-4 text-[#FF9500]" />
+            <span className="text-[13px] text-[#8E8E93]">最高连胜</span>
           </div>
-          <p className="text-2xl font-bold">{playerStats.maxStreak}</p>
+          <p className="text-2xl font-bold text-black">{playerStats.maxStreak}</p>
         </div>
 
-        {/* 当前连胜 */}
-        <div className="glass-card p-4">
+        <div className="ios-list-item p-4">
           <div className="flex items-center gap-2 mb-2">
-            <Star className="w-4 h-4 text-yellow-400" />
-            <span className="text-sm text-white/60">当前连胜</span>
+            <Star className="w-4 h-4 text-[#FFCC00]" />
+            <span className="text-[13px] text-[#8E8E93]">当前连胜</span>
           </div>
-          <p className="text-2xl font-bold">{playerStats.winStreak}</p>
+          <p className="text-2xl font-bold text-black">{playerStats.winStreak}</p>
         </div>
-      </motion.div>
+      </div>
 
       {/* 成就 */}
-      <motion.div
-        className="px-6 mt-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <Medal className="w-5 h-5 text-yellow-400" />
+      <div className="px-4 mt-6">
+        <h3 className="text-[13px] uppercase text-[#8E8E93] font-medium mb-2 px-1 flex items-center gap-1.5">
+          <Medal className="w-3.5 h-3.5" />
           成就
         </h3>
-
-        <div className="grid grid-cols-3 gap-3">
+        <div className="ios-list-item p-3 grid grid-cols-3 gap-2">
           {achievements.map((achievement, index) => (
             <motion.div
               key={index}
-              className={`glass-card p-4 text-center ${
-                achievement.unlocked ? '' : 'opacity-40'
+              className={`flex flex-col items-center py-2 rounded-xl ${
+                achievement.unlocked ? '' : 'opacity-30'
               }`}
               initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: achievement.unlocked ? 1 : 0.4, scale: 1 }}
+              animate={{ opacity: achievement.unlocked ? 1 : 0.3, scale: 1 }}
               transition={{ delay: 0.3 + index * 0.05 }}
             >
-              <div className="text-3xl mb-2">{achievement.icon}</div>
-              <p className="text-xs font-medium">{achievement.name}</p>
+              <div className="text-3xl mb-1">{achievement.icon}</div>
+              <p className="text-[11px] font-medium text-black">{achievement.name}</p>
             </motion.div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       {/* 历史记录 */}
-      <motion.div
-        className="px-6 mt-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-      >
-        <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-purple-400" />
+      <div className="px-4 mt-6">
+        <h3 className="text-[13px] uppercase text-[#8E8E93] font-medium mb-2 px-1">
           最近记录
         </h3>
 
         {gameHistory.length === 0 ? (
-          <div className="glass-card p-8 text-center text-white/40">
+          <div className="ios-list-item p-8 text-center text-[#8E8E93]">
             <p>暂无记录</p>
             <p className="text-sm mt-1">开始游戏以记录你的战绩</p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="ios-list-item overflow-hidden">
             {gameHistory.slice(-10).reverse().map((game, index) => (
               <motion.div
                 key={game.id}
-                className="glass-card p-4 flex items-center justify-between"
+                className={`flex items-center justify-between p-3 ${
+                  index !== Math.min(gameHistory.length, 10) - 1 ? 'border-b border-[#E5E5EA]' : ''
+                }`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.4 + index * 0.05 }}
@@ -179,26 +147,24 @@ export default function ProfilePage() {
                 <div className="flex items-center gap-3">
                   <img
                     src={game.partner.avatar}
-                    alt={game.partner.name}
+                    alt=""
                     className="w-10 h-10 rounded-full"
                   />
                   <div>
-                    <p className="font-medium">{game.partner.name}</p>
-                    <p className="text-xs text-white/40">
+                    <p className="font-medium text-[15px] text-black">TA</p>
+                    <p className="text-[12px] text-[#8E8E93]">
                       {game.partner.isAI ? 'AI' : '真人'}
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                  <span className="text-sm text-white/60">
+                <div className="flex items-center gap-3">
+                  <span className="text-[15px] text-[#0A84FF] font-medium">
                     +{game.score}
                   </span>
                   <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                      game.isCorrect
-                        ? 'bg-green-500/20 text-green-400'
-                        : 'bg-red-500/20 text-red-400'
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs ${
+                      game.isCorrect ? 'bg-[#34C759]' : 'bg-[#FF3B30]'
                     }`}
                   >
                     {game.isCorrect ? '✓' : '✗'}
@@ -208,59 +174,29 @@ export default function ProfilePage() {
             ))}
           </div>
         )}
-      </motion.div>
+      </div>
 
       {/* 底部按钮 */}
-      <motion.div
-        className="fixed bottom-8 left-0 right-0 px-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-      >
+      <div className="fixed bottom-8 left-0 right-0 px-6 max-w-md mx-auto">
         <motion.button
           onClick={() => navigate('/match')}
-          className="w-full glass-button bg-gradient-to-r from-purple-500 to-pink-500 border-none py-4 text-lg font-semibold"
-          whileHover={{ scale: 1.02 }}
+          className="w-full ios-button-primary py-4 text-[17px] font-semibold"
           whileTap={{ scale: 0.98 }}
         >
           开始新挑战
         </motion.button>
-      </motion.div>
+      </div>
     </div>
   );
 }
 
 function getAchievements(stats: any) {
   return [
-    {
-      icon: '🎮',
-      name: '新手',
-      unlocked: stats.totalGames >= 1,
-    },
-    {
-      icon: '🎯',
-      name: '神射手',
-      unlocked: stats.correctGuesses >= 10,
-    },
-    {
-      icon: '🔥',
-      name: '连胜王',
-      unlocked: stats.maxStreak >= 5,
-    },
-    {
-      icon: '👑',
-      name: '大师',
-      unlocked: stats.level >= 10,
-    },
-    {
-      icon: '💎',
-      name: '钻石',
-      unlocked: stats.totalGames >= 50,
-    },
-    {
-      icon: '🌟',
-      name: '传奇',
-      unlocked: stats.maxStreak >= 10,
-    },
+    { icon: '🎮', name: '新手', unlocked: stats.totalGames >= 1 },
+    { icon: '🎯', name: '神射手', unlocked: stats.correctGuesses >= 10 },
+    { icon: '🔥', name: '连胜王', unlocked: stats.maxStreak >= 5 },
+    { icon: '👑', name: '大师', unlocked: stats.level >= 10 },
+    { icon: '💎', name: '钻石', unlocked: stats.totalGames >= 50 },
+    { icon: '🌟', name: '传奇', unlocked: stats.maxStreak >= 10 },
   ];
 }

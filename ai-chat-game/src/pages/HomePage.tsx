@@ -1,40 +1,12 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Play, User, Sparkles } from 'lucide-react';
+import { Play, User } from 'lucide-react';
 
 export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
-      {/* 背景装饰 */}
-      <div className="absolute inset-0 overflow-hidden">
-        <motion.div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-purple-500/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
-          animate={{
-            scale: [1.2, 1, 1.2],
-            opacity: [0.5, 0.3, 0.5],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
-
+    <div className="page-ios min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* 主内容 */}
       <motion.div
         className="relative z-10 text-center flex flex-col items-center"
@@ -47,16 +19,18 @@ export default function HomePage() {
           className="mb-8"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+          transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
         >
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center shadow-2xl animate-glow">
-            <Sparkles className="w-12 h-12 text-white" />
+          <div className="w-24 h-24 rounded-[22px] bg-gradient-to-br from-[#0A84FF] to-[#5856D6] flex items-center justify-center shadow-xl">
+            <svg className="w-14 h-14 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
           </div>
         </motion.div>
 
         {/* 标题 */}
         <motion.h1
-          className="text-5xl md:text-6xl font-bold mb-4 text-gradient"
+          className="text-5xl md:text-6xl font-bold mb-4 text-black tracking-tight"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -65,7 +39,7 @@ export default function HomePage() {
         </motion.h1>
 
         <motion.p
-          className="text-lg md:text-xl text-white/60 mb-12 max-w-md"
+          className="text-lg md:text-xl text-[#8E8E93] mb-12 max-w-md"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4 }}
@@ -76,26 +50,24 @@ export default function HomePage() {
         {/* 开始按钮 */}
         <motion.button
           onClick={() => navigate('/match')}
-          className="glass-button bg-gradient-to-r from-purple-500 to-pink-500 border-none px-12 py-4 text-lg font-semibold mb-6 shadow-xl"
+          className="ios-button-primary px-12 py-4 text-lg font-semibold mb-6 shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(168, 85, 247, 0.5)" }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.97 }}
         >
-          <Play className="w-5 h-5 mr-2 inline-block" />
+          <Play className="w-5 h-5 mr-2 inline-block" fill="currentColor" />
           开始挑战
         </motion.button>
 
         {/* 个人按钮 */}
         <motion.button
           onClick={() => navigate('/profile')}
-          className="glass-button flex items-center gap-2"
+          className="ios-button-secondary flex items-center gap-2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
+          whileTap={{ scale: 0.97 }}
         >
           <User className="w-4 h-4" />
           个人记录
@@ -104,7 +76,7 @@ export default function HomePage() {
 
       {/* 底部装饰 */}
       <motion.div
-        className="absolute bottom-8 text-white/40 text-sm"
+        className="absolute bottom-8 text-[#8E8E93] text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.7 }}

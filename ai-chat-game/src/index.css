@@ -4,90 +4,74 @@
 
 @layer base {
   body {
-    @apply min-h-screen font-sans antialiased;
-    background: transparent;
+    @apply min-h-screen font-sans antialiased text-black;
+    background: #FFFFFF;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
 @layer components {
-  /* 深色页面通用样式 */
-  .page-dark {
-    @apply bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen text-white;
-    background-attachment: fixed;
+  /* iOS 浅色页面 */
+  .page-ios {
+    @apply min-h-screen text-black;
+    background: #F2F2F7;
   }
 
-  /* 玻璃拟态组件 */
-  .glass {
-    @apply backdrop-blur-xl bg-white/10 border border-white/20 shadow-2xl;
+  /* iOS 顶部导航栏（毛玻璃） */
+  .ios-nav-bar {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
   }
 
-  .glass-card {
-    @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl shadow-xl;
+  /* iOS 列表卡片 */
+  .ios-list-item {
+    background: #FFFFFF;
+    border-radius: 14px;
+    box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.04);
   }
 
-  .glass-button {
-    @apply backdrop-blur-md bg-white/10 border border-white/20 rounded-full px-6 py-3 font-medium transition-all duration-300 hover:bg-white/20 hover:scale-105 active:scale-95 text-white;
+  /* iOS 主操作按钮（蓝色实心） */
+  .ios-button-primary {
+    @apply font-semibold text-white transition-all;
+    background: #0A84FF;
+    border-radius: 14px;
+  }
+  .ios-button-primary:active {
+    background: #0066CC;
+  }
+  .ios-button-primary:disabled {
+    @apply cursor-not-allowed;
+    background: #0A84FF;
   }
 
-  .glass-input {
-    @apply backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl px-4 py-3 outline-none focus:border-white/30 transition-all duration-300 placeholder:text-white/30 text-white;
+  /* iOS 次要按钮（灰色） */
+  .ios-button-secondary {
+    @apply font-medium text-[#0A84FF] transition-all;
+    background: rgba(120, 120, 128, 0.12);
+    border-radius: 14px;
   }
-
-  /* iMessage 气泡 */
-  .bubble-sent {
-    @apply bg-[#007AFF] text-white rounded-[18px] rounded-br-[4px];
-  }
-
-  .bubble-received {
-    @apply bg-[#E5E5EA] text-black rounded-[18px] rounded-bl-[4px];
+  .ios-button-secondary:active {
+    background: rgba(120, 120, 128, 0.18);
   }
 }
 
 @layer utilities {
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .animate-glow {
-    animation: glow 2s ease-in-out infinite alternate;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes glow {
-  from {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
-  }
-  to {
-    box-shadow: 0 0 40px rgba(139, 92, 246, 0.6);
-  }
+  .text-ios-blue { color: #0A84FF; }
+  .text-ios-green { color: #34C759; }
+  .text-ios-red { color: #FF3B30; }
+  .text-ios-orange { color: #FF9500; }
+  .text-ios-yellow { color: #FFCC00; }
+  .text-ios-gray { color: #8E8E93; }
+  .text-ios-label { color: #000000; }
+  .text-ios-secondary { color: #3C3C43; }
+  .bg-ios-bg { background-color: #F2F2F7; }
+  .bg-ios-card { background-color: #FFFFFF; }
 }
 
 /* iOS-style scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-white/20 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-white/30;
+  width: 0;
+  display: none;
 }

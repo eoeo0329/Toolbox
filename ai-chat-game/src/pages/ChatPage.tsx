@@ -81,10 +81,7 @@ export default function ChatPage() {
               alt={partner.name}
               className="w-10 h-10 rounded-full object-cover"
             />
-            <div className="flex items-center gap-0.5 mt-0.5">
-              <span className="text-[13px] font-semibold text-black">TA</span>
-              <ChevronLeft className="w-3 h-3 text-gray-400 rotate-180" />
-            </div>
+            <span className="text-[13px] font-semibold text-black mt-0.5">TA</span>
           </div>
         </div>
       </div>

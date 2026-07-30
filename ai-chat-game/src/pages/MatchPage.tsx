@@ -19,23 +19,23 @@ export default function MatchPage() {
   }, [state.isMatching, state.currentSession, navigate]);
 
   return (
-    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="page-ios min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* 背景动画圆圈 */}
       <div className="absolute inset-0 flex items-center justify-center">
         {[...Array(3)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-64 h-64 rounded-full border border-white/10"
+            className="absolute w-64 h-64 rounded-full border border-[#0A84FF]/20"
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{
               scale: [0.5, 2, 0.5],
-              opacity: [0, 0.3, 0],
+              opacity: [0, 0.4, 0],
             }}
             transition={{
               duration: 3,
               repeat: Infinity,
               delay: i * 0.6,
-              ease: "easeOut",
+              ease: 'easeOut',
             }}
           />
         ))}
@@ -45,9 +45,9 @@ export default function MatchPage() {
       <motion.div
         className="relative z-10 mb-8"
         animate={{ rotate: 360 }}
-        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+        transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
       >
-        <Loader2 className="w-16 h-16 text-purple-400" />
+        <Loader2 className="w-16 h-16 text-[#0A84FF]" />
       </motion.div>
 
       {/* 匹配文字 */}
@@ -57,13 +57,13 @@ export default function MatchPage() {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <h2 className="text-2xl font-semibold mb-2 text-gradient">正在匹配聊天对象</h2>
-        <p className="text-white/60">请稍候...</p>
+        <h2 className="text-2xl font-semibold mb-2 text-black">正在匹配聊天对象</h2>
+        <p className="text-[#8E8E93]">请稍候...</p>
       </motion.div>
 
       {/* 动态提示 */}
       <motion.div
-        className="absolute bottom-12 text-white/40 text-sm"
+        className="absolute bottom-12 text-[#8E8E93] text-sm"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
