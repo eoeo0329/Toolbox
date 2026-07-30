@@ -6,7 +6,7 @@ export default function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* 背景装饰 */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div

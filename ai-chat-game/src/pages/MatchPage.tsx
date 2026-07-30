@@ -19,7 +19,7 @@ export default function MatchPage() {
   }, [state.isMatching, state.currentSession, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* 背景动画圆圈 */}
       <div className="absolute inset-0 flex items-center justify-center">
         {[...Array(3)].map((_, i) => (

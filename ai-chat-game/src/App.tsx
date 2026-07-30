@@ -12,16 +12,14 @@ function App() {
   return (
     <GameProvider>
       <Router>
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/match" element={<MatchPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/judge" element={<JudgePage />} />
-            <Route path="/result" element={<ResultPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/match" element={<MatchPage />} />
+          <Route path="/chat" element={<ChatPage />} />
+          <Route path="/judge" element={<JudgePage />} />
+          <Route path="/result" element={<ResultPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+        </Routes>
       </Router>
     </GameProvider>
   );

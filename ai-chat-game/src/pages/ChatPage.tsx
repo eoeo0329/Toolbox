@@ -2,7 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '../context/GameContext';
-import { Send, Check, CheckCheck, ChevronLeft } from 'lucide-react';
+import {
+  ChevronLeft,
+  Video,
+  Plus,
+  Mic,
+  ArrowUp,
+  Lock,
+} from 'lucide-react';
 import type { Message } from '../types';
 
 export default function ChatPage() {
@@ -18,22 +25,19 @@ export default function ChatPage() {
   // 倒计时逻辑
   useEffect(() => {
     if (!currentSession) return;
-
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          // 超时，游戏失败
           navigate('/result?timeout=true');
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(timer);
   }, [currentSession, navigate]);
 
-  // 收到消息时重置倒计时
+  // 收到消息重置倒计时
   useEffect(() => {
     if (currentSession && currentSession.messages.length > 0) {
       const lastMessage = currentSession.messages[currentSession.messages.length - 1];
@@ -43,87 +47,92 @@ export default function ChatPage() {
     }
   }, [currentSession?.messages]);
 
-  // 自动滚动到底部
+  // 自动滚动
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [currentSession?.messages, isTyping]);
 
   const handleSendMessage = () => {
     if (!inputValue.trim() || !currentSession) return;
-
     sendMessage(inputValue.trim());
     setInputValue('');
     setCountdown(60);
-
-    // 重新聚焦输入框
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+    setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const handleEndChat = () => {
     navigate('/judge');
   };
 
-  if (!currentSession) {
-    return <div>加载中...</div>;
-  }
+  if (!currentSession) return <div className="h-screen bg-[#F2F2F7] flex items-center justify-center">加载中...</div>;
+
+  const partner = currentSession.partner;
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
 
   return (
-    <div className="h-screen flex flex-col bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-      {/* 顶部栏 */}
-      <div className="glass-card rounded-none border-t-0 border-x-0 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+    <div className="h-screen flex flex-col bg-[#F2F2F7] text-black">
+      {/* ===== 顶部导航栏 ===== */}
+      <div className="bg-white/90 backdrop-blur-xl border-b border-gray-200 shrink-0 z-10">
+        {/* 第一行：返回 + 头像 + 视频 */}
+        <div className="flex items-center justify-between px-2 pt-2 pb-1">
+          <div className="flex items-center gap-1">
+            <motion.button
+              onClick={() => navigate('/')}
+              className="p-1.5 rounded-full active:bg-gray-100 transition-colors"
+              whileTap={{ scale: 0.9 }}
+            >
+              <ChevronLeft className="w-7 h-7 text-[#007AFF]" strokeWidth={2.5} />
+            </motion.button>
+            <div className="relative">
+              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-white">
+                <img src={partner.avatar} alt="" className="w-full h-full rounded-full object-cover" />
+              </div>
+              <div className="absolute -top-1 -right-1 w-4 h-4 bg-[#007AFF] rounded-full flex items-center justify-center text-[10px] font-bold text-white">
+                {currentSession.messages.filter(m => m.sender === 'player').length || '1'}
+              </div>
+            </div>
+          </div>
+
+          {/* 中间：大头像 + 名字 */}
+          <div className="flex flex-col items-center">
+            <img
+              src={partner.avatar}
+              alt={partner.name}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+            <div className="flex items-center gap-0.5 mt-0.5">
+              <span className="text-[13px] font-semibold text-black">{partner.name}</span>
+              <ChevronLeft className="w-3 h-3 text-gray-400 rotate-180" />
+            </div>
+          </div>
+
           <motion.button
-            onClick={() => navigate('/')}
-            className="p-2 rounded-full hover:bg-white/10 transition-colors"
-            whileHover={{ scale: 1.1 }}
+            className="p-2 rounded-full active:bg-gray-100 transition-colors"
             whileTap={{ scale: 0.9 }}
           >
-            <ChevronLeft className="w-5 h-5" />
+            <Video className="w-6 h-6 text-[#007AFF]" />
           </motion.button>
+        </div>
+      </div>
 
-          <div className="flex items-center gap-3">
-            <div className="relative">
-              <img
-                src={currentSession.partner.avatar}
-                alt={currentSession.partner.name}
-                className="w-10 h-10 rounded-full"
-              />
-              {currentSession.partner.isOnline && (
-                <motion.div
-                  className="absolute -bottom-0.5 -right-0.5 online-indicator"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 500 }}
-                />
-              )}
-            </div>
-            <div>
-              <h2 className="font-semibold">{currentSession.partner.name}</h2>
-              <p className="text-xs text-white/60">
-                {isTyping ? '正在输入...' : '在线'}
-              </p>
-            </div>
+      {/* ===== 聊天区域 ===== */}
+      <div className="flex-1 overflow-y-auto px-3 pt-2 pb-1">
+        {/* iMessage 加密提示 */}
+        <div className="flex flex-col items-center gap-0.5 mb-3">
+          <span className="text-[11px] text-gray-400 font-medium">iMessage 信息</span>
+          <div className="flex items-center gap-1">
+            <Lock className="w-3 h-3 text-gray-400" />
+            <span className="text-[11px] text-gray-400">已加密</span>
           </div>
         </div>
 
-        {/* 倒计时 */}
-        <motion.div
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${
-            countdown <= 10
-              ? 'bg-red-500/30 text-red-400'
-              : 'bg-white/10 text-white/60'
-          }`}
-          animate={countdown <= 10 ? { scale: [1, 1.05, 1] } : {}}
-          transition={{ duration: 0.5, repeat: countdown <= 10 ? Infinity : 0 }}
-        >
-          <span className="text-sm font-mono">{countdown}s</span>
-        </motion.div>
-      </div>
+        {/* 时间分隔线 */}
+        <div className="flex justify-center mb-3">
+          <span className="text-[11px] text-gray-400">今天 {timeStr}</span>
+        </div>
 
-      {/* 消息区域 */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+        {/* 消息列表 */}
         <AnimatePresence initial={false}>
           {currentSession.messages.map((message, index) => (
             <MessageBubble
@@ -139,13 +148,13 @@ export default function ChatPage() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="flex justify-start"
+            className="flex justify-start mb-1"
           >
-            <div className="message-bubble message-received">
-              <div className="typing-indicator flex gap-1">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div className="bg-[#E5E5EA] rounded-[18px] rounded-bl-[4px] px-4 py-2.5 max-w-[75%] min-w-[50px]">
+              <div className="flex items-center gap-1">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
             </div>
           </motion.div>
@@ -154,86 +163,117 @@ export default function ChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* 底部输入区域 */}
-      <div className="glass-card rounded-none border-b-0 border-x-0 p-4">
-        <div className="flex gap-2">
-          <input
-            ref={inputRef}
-            type="text"
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder="输入消息..."
-            className="flex-1 glass-input"
-            autoFocus
-          />
-          <motion.button
-            onClick={handleSendMessage}
-            disabled={!inputValue.trim()}
-            className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-full w-12 h-12 flex items-center justify-center disabled:opacity-50"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+      {/* ===== 底部输入区域 ===== */}
+      <div className="bg-[#F2F2F7] border-t border-gray-200 shrink-0">
+        {/* 倒计时提示（剩余10秒时显示） */}
+        {countdown <= 10 && countdown > 0 && (
+          <motion.div
+            className="flex justify-center py-1"
+            animate={{ opacity: [1, 0.5, 1] }}
+            transition={{ duration: 0.5, repeat: Infinity }}
           >
-            <Send className="w-5 h-5" />
+            <span className="text-xs text-red-500 font-medium">
+              {countdown}秒后超时
+            </span>
+          </motion.div>
+        )}
+
+        <div className="flex items-end gap-2 px-3 py-2">
+          {/* + 按钮 */}
+          <motion.button
+            className="w-8 h-8 rounded-full bg-[#007AFF] flex items-center justify-center mb-1 shrink-0"
+            whileTap={{ scale: 0.9 }}
+          >
+            <Plus className="w-5 h-5 text-white" />
           </motion.button>
+
+          {/* 输入框 */}
+          <div className="flex-1 bg-white rounded-full flex items-center px-4 py-2 min-h-[36px] max-h-[120px]">
+            <input
+              ref={inputRef}
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+              placeholder={inputValue ? '' : 'iMessage 信息'}
+              className="w-full text-[16px] outline-none bg-transparent placeholder:text-[#C7C7CC]"
+              autoFocus
+            />
+          </div>
+
+          {/* 发送/麦克风按钮 */}
+          {inputValue.trim() ? (
+            <motion.button
+              onClick={handleSendMessage}
+              className="w-8 h-8 rounded-full bg-[#007AFF] flex items-center justify-center mb-1 shrink-0"
+              whileTap={{ scale: 0.9 }}
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 500 }}
+            >
+              <ArrowUp className="w-5 h-5 text-white" />
+            </motion.button>
+          ) : (
+            <motion.button
+              className="w-8 h-8 flex items-center justify-center mb-1 shrink-0"
+              whileTap={{ scale: 0.9 }}
+            >
+              <Mic className="w-6 h-6 text-[#007AFF]" />
+            </motion.button>
+          )}
         </div>
 
-        {/* 结束聊天按钮 */}
-        <motion.button
+        {/* 结束聊天 */}
+        <button
           onClick={handleEndChat}
-          className="w-full mt-3 py-2 text-sm text-white/60 hover:text-white transition-colors"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+          className="w-full text-center text-[11px] text-gray-400 py-1.5 hover:text-gray-600 transition-colors"
         >
           结束聊天，做出判断
-        </motion.button>
+        </button>
       </div>
     </div>
   );
 }
 
-// 消息气泡组件
+// ===== 消息气泡组件 =====
 function MessageBubble({ message, isLast }: { message: Message; isLast: boolean }) {
   const isPlayer = message.sender === 'player';
+  const timeStr = message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      initial={{ opacity: 0, y: 10, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-      className={`flex ${isPlayer ? 'justify-end' : 'justify-start'}`}
+      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+      className={`flex ${isPlayer ? 'justify-end' : 'justify-start'} mb-1`}
     >
-      <div className={`message-bubble ${isPlayer ? 'message-sent' : 'message-received'}`}>
-        <p className="text-sm md:text-base">{message.text}</p>
+      <div className="flex flex-col max-w-[75%]">
+        {/* 气泡 */}
+        <div
+          className={`relative px-4 py-2 text-[16px] leading-[22px] ${
+            isPlayer
+              ? 'bg-[#007AFF] text-white rounded-[18px] rounded-br-[4px]'
+              : 'bg-[#E5E5EA] text-black rounded-[18px] rounded-bl-[4px]'
+          }`}
+        >
+          {message.text}
+        </div>
 
-        {/* 消息状态 */}
-        {isPlayer && (
-          <div className="flex items-center justify-end gap-1 mt-1">
-            <span className="text-xs text-white/40">
-              {message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
-            </span>
-            <MessageStatus status={message.status} isLast={isLast} />
-          </div>
+        {/* 已读状态 */}
+        {isPlayer && isLast && (
+          <motion.div
+            className="flex items-center justify-end gap-0.5 mt-0.5 px-1"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+          >
+            <span className="text-[11px] text-gray-400">{timeStr}</span>
+            {message.status === 'read' && (
+              <span className="text-[11px] text-gray-400 ml-0.5">已读</span>
+            )}
+          </motion.div>
         )}
       </div>
-    </motion.div>
-  );
-}
-
-// 消息状态组件
-function MessageStatus({ status, isLast }: { status?: string; isLast: boolean }) {
-  if (!status) return null;
-
-  return (
-    <motion.div
-      key={status}
-      initial={{ opacity: 0, scale: 0 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ type: "spring", stiffness: 500 }}
-    >
-      {status === 'sent' && <Check className="w-3 h-3 text-white/40" />}
-      {status === 'delivered' && <CheckCheck className="w-3 h-3 text-white/40" />}
-      {status === 'read' && <CheckCheck className="w-3 h-3 text-blue-400" />}
     </motion.div>
   );
 }

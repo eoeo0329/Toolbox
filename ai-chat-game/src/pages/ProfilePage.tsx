@@ -24,7 +24,7 @@ export default function ProfilePage() {
   const achievements = getAchievements(playerStats);
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="page-dark min-h-screen pb-24">
       {/* 顶部栏 */}
       <div className="glass-card rounded-none border-t-0 border-x-0 px-4 py-4 flex items-center gap-3 sticky top-0 z-10">
         <motion.button

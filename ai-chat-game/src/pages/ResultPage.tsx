@@ -26,7 +26,7 @@ export default function ResultPage() {
 
   if (isTimeout) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6">
+      <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6">
         <motion.div
           className="text-center"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -65,7 +65,7 @@ export default function ResultPage() {
   const analysis = generateAnalysis(currentSession);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 pb-32">
+    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6 pb-32">
       {/* 结果标题 */}
       <motion.div
         className="text-center mb-8"

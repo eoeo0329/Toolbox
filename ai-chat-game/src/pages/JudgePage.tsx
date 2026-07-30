@@ -23,7 +23,7 @@ export default function JudgePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6">
+    <div className="page-dark min-h-screen flex flex-col items-center justify-center p-6">
       {/* 标题 */}
       <motion.div
         className="text-center mb-12"
