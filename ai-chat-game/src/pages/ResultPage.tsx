@@ -25,12 +25,6 @@ export default function ResultPage() {
 
   const { currentSession, playerStats } = state;
 
-  useEffect(() => {
-    return () => {
-      dispatch({ type: 'END_SESSION' });
-    };
-  }, [dispatch]);
-
   if (!currentSession && !isTimeout) {
     navigate('/');
     return null;
@@ -294,7 +288,10 @@ export default function ResultPage() {
         transition={{ delay: 0.65 }}
       >
         <motion.button
-          onClick={() => navigate('/match')}
+          onClick={() => {
+            dispatch({ type: 'END_SESSION' });
+            navigate('/match');
+          }}
           className="w-full ios-button-primary py-4 text-[17px] font-semibold flex items-center justify-center gap-2"
           whileTap={{ scale: 0.98 }}
         >
@@ -303,7 +300,10 @@ export default function ResultPage() {
         </motion.button>
 
         <motion.button
-          onClick={() => navigate('/')}
+          onClick={() => {
+            dispatch({ type: 'END_SESSION' });
+            navigate('/');
+          }}
           className="w-full ios-button-secondary py-3.5 text-[15px] flex items-center justify-center gap-2"
           whileTap={{ scale: 0.98 }}
         >

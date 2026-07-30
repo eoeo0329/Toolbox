@@ -14,7 +14,7 @@ interface GameState {
 type GameAction =
   | { type: 'START_MATCHING' }
   | { type: 'MATCH_SUCCESS'; payload: ChatPartner }
-  | { type: 'SEND_MESSAGE'; payload: string }
+  | { type: 'SEND_MESSAGE'; payload: { text: string; messageId: string } }
   | { type: 'RECEIVE_MESSAGE'; payload: Message }
   | { type: 'UPDATE_MESSAGE_STATUS'; payload: { messageId: string; status: 'delivered' | 'read' } }
   | { type: 'SET_TYPING'; payload: boolean }
@@ -70,8 +70,8 @@ function gameReducer(state: GameState, action: GameAction): GameState {
       if (!state.currentSession) return state;
 
       const playerMessage: Message = {
-        id: Date.now().toString(),
-        text: action.payload,
+        id: action.payload.messageId,
+        text: action.payload.text,
         sender: 'player',
         timestamp: new Date(),
         status: 'sent',
@@ -79,7 +79,7 @@ function gameReducer(state: GameState, action: GameAction): GameState {
 
       // AI自动回复
       const personality = state.currentSession.partner.personality || 'rational';
-      const aiResponse = getContextualResponse(personality, action.payload);
+      const aiResponse = getContextualResponse(personality, action.payload.text);
       const delay = getResponseDelay(personality);
 
       setTimeout(() => {
@@ -257,7 +257,8 @@ export function GameProvider({ children }: { children: ReactNode }) {
   };
 
   const sendMessage = (text: string) => {
-    dispatch({ type: 'SEND_MESSAGE', payload: text });
+    const messageId = Date.now().toString();
+    dispatch({ type: 'SEND_MESSAGE', payload: { text, messageId } });
 
     if (!state.currentSession) return;
 
@@ -266,7 +267,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       dispatch({
         type: 'UPDATE_MESSAGE_STATUS',
         payload: {
-          messageId: state.currentSession!.messages[state.currentSession!.messages.length - 1].id,
+          messageId,
           status: 'delivered',
         },
       });
@@ -277,7 +278,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       dispatch({
         type: 'UPDATE_MESSAGE_STATUS',
         payload: {
-          messageId: state.currentSession!.messages[state.currentSession!.messages.length - 1].id,
+          messageId,
           status: 'read',
         },
       });
