@@ -1,0 +1,82 @@
+{
+  "": {
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/master.swiftdeps"
+  },
+  "/workspace/FocusTodoApp/Sources/FocusTodoApp.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Models/AppTheme.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Models/FocusSession.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Models/Task.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Views/ContentView.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Views/StatsView.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.dia"
+  },
+  "/workspace/FocusTodoApp/Sources/Views/TaskListView.swift": {
+    "dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.d",
+    "object": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.swift.o",
+    "swiftmodule": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView~partial.swiftmodule",
+    "swift-dependencies": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.swiftdeps",
+    "diagnostics": "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.dia"
+  }
+}

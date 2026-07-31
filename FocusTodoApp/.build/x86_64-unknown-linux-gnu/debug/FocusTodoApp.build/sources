@@ -1,0 +1,11 @@
+/workspace/FocusTodoApp/Sources/FocusTodoApp.swift
+/workspace/FocusTodoApp/Sources/Models/AppTheme.swift
+/workspace/FocusTodoApp/Sources/Models/FocusSession.swift
+/workspace/FocusTodoApp/Sources/Models/Task.swift
+/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift
+/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift
+/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift
+/workspace/FocusTodoApp/Sources/Views/ContentView.swift
+/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift
+/workspace/FocusTodoApp/Sources/Views/StatsView.swift
+/workspace/FocusTodoApp/Sources/Views/TaskListView.swift

@@ -1,0 +1,341 @@
+{
+  "builtTestProducts" : [
+
+  ],
+  "copyCommands" : {
+
+  },
+  "explicitTargetDependencyImportCheckingMode" : {
+    "none" : {
+
+    }
+  },
+  "generatedSourceTargetSet" : [
+
+  ],
+  "pluginDescriptions" : [
+
+  ],
+  "swiftCommands" : {
+    "C.FocusTodoApp-x86_64-unknown-linux-gnu-debug.module" : {
+      "executable" : "/root/.local/share/swiftly/toolchains/6.2.4/usr/bin/swiftc",
+      "fileList" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/sources",
+      "importPath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "inputs" : [
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/FocusTodoApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/AppTheme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/FocusSession.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/Task.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/StatsView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/TaskListView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/swift-version-57277D8F53C70152.txt"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/sources"
+        }
+      ],
+      "isLibrary" : true,
+      "moduleName" : "FocusTodoApp",
+      "moduleOutputPath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/Modules/FocusTodoApp.swiftmodule",
+      "objects" : [
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.swift.o",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.swift.o"
+      ],
+      "otherArguments" : [
+        "-target",
+        "x86_64-unknown-linux-gnu",
+        "-incremental",
+        "-enable-batch-mode",
+        "-serialize-diagnostics",
+        "-index-store-path",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/index/store",
+        "-Onone",
+        "-enable-testing",
+        "-j3",
+        "-DSWIFT_PACKAGE",
+        "-DDEBUG",
+        "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+        "-module-cache-path",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+        "-parseable-output",
+        "-parse-as-library",
+        "-emit-objc-header",
+        "-emit-objc-header-path",
+        "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/include/FocusTodoApp-Swift.h",
+        "-swift-version",
+        "5",
+        "-g",
+        "-Xcc",
+        "-fPIC",
+        "-Xcc",
+        "-g",
+        "-package-name",
+        "focustodoapp",
+        "-Xcc",
+        "-fno-omit-frame-pointer"
+      ],
+      "outputFileMapPath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/output-file-map.json",
+      "outputs" : [
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTodoApp.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/AppTheme.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusSession.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/Task.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerViewModel.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskStore.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/CustomComponents.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/ContentView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/FocusTimerView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/StatsView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/TaskListView.swift.o"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/Modules/FocusTodoApp.swiftmodule"
+        }
+      ],
+      "prepareForIndexing" : false,
+      "sources" : [
+        "/workspace/FocusTodoApp/Sources/FocusTodoApp.swift",
+        "/workspace/FocusTodoApp/Sources/Models/AppTheme.swift",
+        "/workspace/FocusTodoApp/Sources/Models/FocusSession.swift",
+        "/workspace/FocusTodoApp/Sources/Models/Task.swift",
+        "/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift",
+        "/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift",
+        "/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift",
+        "/workspace/FocusTodoApp/Sources/Views/ContentView.swift",
+        "/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift",
+        "/workspace/FocusTodoApp/Sources/Views/StatsView.swift",
+        "/workspace/FocusTodoApp/Sources/Views/TaskListView.swift"
+      ],
+      "tempsPath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build",
+      "wholeModuleOptimization" : false
+    }
+  },
+  "swiftFrontendCommands" : {
+
+  },
+  "swiftTargetScanArgs" : {
+    "FocusTodoApp" : [
+      "/root/.local/share/swiftly/toolchains/6.2.4/usr/bin/swiftc",
+      "-module-name",
+      "FocusTodoApp",
+      "-package-name",
+      "focustodoapp",
+      "-c",
+      "/workspace/FocusTodoApp/Sources/FocusTodoApp.swift",
+      "/workspace/FocusTodoApp/Sources/Models/AppTheme.swift",
+      "/workspace/FocusTodoApp/Sources/Models/FocusSession.swift",
+      "/workspace/FocusTodoApp/Sources/Models/Task.swift",
+      "/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift",
+      "/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift",
+      "/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift",
+      "/workspace/FocusTodoApp/Sources/Views/ContentView.swift",
+      "/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift",
+      "/workspace/FocusTodoApp/Sources/Views/StatsView.swift",
+      "/workspace/FocusTodoApp/Sources/Views/TaskListView.swift",
+      "-I",
+      "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/Modules",
+      "-target",
+      "x86_64-unknown-linux-gnu",
+      "-incremental",
+      "-enable-batch-mode",
+      "-serialize-diagnostics",
+      "-index-store-path",
+      "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/index/store",
+      "-Onone",
+      "-enable-testing",
+      "-j3",
+      "-DSWIFT_PACKAGE",
+      "-DDEBUG",
+      "-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE",
+      "-module-cache-path",
+      "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/ModuleCache",
+      "-parseable-output",
+      "-parse-as-library",
+      "-emit-objc-header",
+      "-emit-objc-header-path",
+      "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/include/FocusTodoApp-Swift.h",
+      "-swift-version",
+      "5",
+      "-g",
+      "-Xcc",
+      "-fPIC",
+      "-Xcc",
+      "-g",
+      "-package-name",
+      "focustodoapp",
+      "-Xcc",
+      "-fno-omit-frame-pointer",
+      "-driver-use-frontend-path",
+      "/root/.local/share/swiftly/toolchains/6.2.4/usr/bin/swiftc"
+    ]
+  },
+  "targetDependencyMap" : {
+    "FocusTodoApp" : [
+
+    ]
+  },
+  "testDiscoveryCommands" : {
+
+  },
+  "testEntryPointCommands" : {
+
+  },
+  "traitConfiguration" : {
+    "default" : {
+
+    }
+  },
+  "writeCommands" : {
+    "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/sources" : {
+      "alwaysOutOfDate" : false,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<sources-file-list>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/FocusTodoApp.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/AppTheme.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/FocusSession.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Models/Task.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/ViewModels/FocusTimerViewModel.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/ViewModels/TaskStore.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/Components/CustomComponents.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/ContentView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/FocusTimerView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/StatsView.swift"
+        },
+        {
+          "kind" : "file",
+          "name" : "/workspace/FocusTodoApp/Sources/Views/TaskListView.swift"
+        }
+      ],
+      "outputFilePath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/FocusTodoApp.build/sources"
+    },
+    "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/swift-version-57277D8F53C70152.txt" : {
+      "alwaysOutOfDate" : true,
+      "inputs" : [
+        {
+          "kind" : "virtual",
+          "name" : "<swift-get-version>"
+        },
+        {
+          "kind" : "file",
+          "name" : "/root/.local/share/swiftly/toolchains/6.2.4/usr/bin/swiftc"
+        }
+      ],
+      "outputFilePath" : "/workspace/FocusTodoApp/.build/x86_64-unknown-linux-gnu/debug/swift-version-57277D8F53C70152.txt"
+    }
+  }
+}
