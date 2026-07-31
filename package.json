@@ -1,0 +1,34 @@
+{
+  "name": "uni-app-todo",
+  "version": "1.0.0",
+  "description": "uni-app Todo 待办事项应用",
+  "main": "main.js",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@dcloudio/uni-app": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-app-plus": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-components": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-h5": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-alipay": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-baidu": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-jd": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-kuaishou": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-qq": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-toutiao": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-weixin": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-mp-xhs": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-quickapp-native": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-quickapp-webview": "^2.0.2-3080420230530001",
+    "@dcloudio/uni-stat": "^2.0.2-3080420230530001",
+    "vue": "^2.6.14"
+  },
+  "scripts": {
+    "dev:h5": "cross-env NODE_ENV=development UNI_PLATFORM=h5 vue-cli-service uni-serve",
+    "dev:mp-weixin": "cross-env NODE_ENV=development UNI_PLATFORM=mp-weixin vue-cli-service uni-build --watch",
+    "dev:app-plus": "cross-env NODE_ENV=development UNI_PLATFORM=app-plus vue-cli-service uni-build --watch",
+    "build:h5": "cross-env NODE_ENV=production UNI_PLATFORM=h5 vue-cli-service uni-build",
+    "build:mp-weixin": "cross-env NODE_ENV=production UNI_PLATFORM=mp-weixin vue-cli-service uni-build",
+    "build:app-plus": "cross-env NODE_ENV=production UNI_PLATFORM=app-plus vue-cli-service uni-build"
+  }
+}
